@@ -34,6 +34,9 @@ Then finish setup with the [Quick start](plugins/sdlc/README.md#quick-start)
 "Engineer, fix #57" or "CEO, work tickets #12 to #18 and QA the app". Skills
 are invoked as `/sdlc:<skill>`.
 
+If you switch Claude accounts during a session, see
+[Install without claude.ai sync](#install-without-claudeai-sync).
+
 ## Update
 
 Auto-update is off by default for third-party marketplaces. Either:
@@ -44,6 +47,64 @@ Auto-update is off by default for third-party marketplaces. Either:
   `KnobanLabs`, and select **Enable auto-update**.
 
 A new release reaches you when its version changes.
+
+## Install without claude.ai sync
+
+When your organization turns sdlc on for its members on claude.ai, Claude Code
+downloads a copy for each account into
+`~/.claude/plugins/synced/<org>_<account>/`. If you switch accounts during a
+session, for example with [claude-swap](https://github.com/realiti4/claude-swap),
+Claude Code removes the sdlc skills ("its plugin was synced for another
+account"), even when every account is in the same organization.
+
+The workaround below installs sdlc from this marketplace instead and turns the
+sync off. It isn't an Anthropic feature, and it has been tested only on macOS
+with Claude Code 2.1.308.
+
+1. Install sdlc at user scope, which isn't tied to an account:
+
+   ```bash
+   claude plugin marketplace add KnobanLabs/sdlc --scope user
+   claude plugin install sdlc@KnobanLabs --scope user
+   ```
+
+2. Turn off claude.ai plugin sync for Claude Code. Back up
+   `~/.claude/settings.json`, then add this key to it, keeping every other key:
+
+   ```json
+   "syncClaudeAiPlugins": false
+   ```
+
+   Only `false` has an effect. Claude Code stops downloading claude.ai
+   plugins, and on its next launch moves `~/.claude/plugins/synced` to
+   `~/.claude/plugins/.trash`.
+
+3. Check the install: `claude plugin list` shows `sdlc@KnobanLabs` enabled,
+   and `claude plugin details sdlc@KnobanLabs` lists 26 skills and 19 agents.
+4. Start a new session, switch accounts (`cswap switch` with claude-swap), and
+   check that the `sdlc:` skills are still there.
+
+Keep in mind:
+
+- **Every claude.ai plugin stops syncing** to Claude Code, not only sdlc.
+  Install any other organization plugin you need from its marketplace.
+- **The Claude desktop app** still shows your organization's sdlc as enabled on
+  its plugin screen. That's your claude.ai account setting, and it's expected.
+- **Your organization's updates no longer arrive.** Update as in
+  [Update](#update), with `claude plugin marketplace update KnobanLabs`. The
+  marketplace follows the default branch, `develop`; to follow a release tag
+  instead, add it as `KnobanLabs/sdlc#v0.24.3`.
+- **Without network or GitHub access**, copy this repository to the machine
+  (a clone or a downloaded archive) and run
+  `claude plugin marketplace add /path/to/sdlc --scope user`. The repository
+  root is the marketplace.
+- **If `claude` isn't on your PATH** on macOS, the Claude desktop app bundles
+  one at
+  `~/Library/Application Support/Claude/claude-code/<version>/*/claude.app/Contents/MacOS/claude`.
+  Use the newest version.
+- **To undo it**, remove `syncClaudeAiPlugins` from `settings.json`, then run
+  `claude plugin uninstall sdlc@KnobanLabs` and
+  `claude plugin marketplace remove KnobanLabs`.
 
 ## Requirements
 
