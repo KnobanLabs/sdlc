@@ -1,0 +1,52 @@
+# Copyright 2026 Knoban LLC
+# SPDX-License-Identifier: MIT
+# (https://github.com/KnobanLabs/sdlc)
+
+# The area labels ~PR Preparation sets from the paths a pull request changes,
+# kept in sync with its diff (sync-labels). Each one is in .github/labels.json
+# too. The plugin's skills and agents are Markdown, but they are the product,
+# so they count as plugin, not documentation.
+
+plugin:
+  - changed-files:
+      - any-glob-to-any-file:
+          - plugins/**
+          - .claude-plugin/**
+
+config:
+  - changed-files:
+      - any-glob-to-any-file:
+          - .editorconfig
+          - .gitattributes
+          - .gitignore
+          - .vscode/**
+
+documentation:
+  - changed-files:
+      - any-glob-to-any-file:
+          - '*.md'
+          - plugins/*/README.md
+          - .github/PULL_REQUEST_TEMPLATE.md
+          - .github/ISSUE_TEMPLATE/**
+          - .github/copilot-instructions.md
+
+ci:
+  - changed-files:
+      - any-glob-to-any-file:
+          - .github/workflows/**
+          - .github/actions/**
+          - .github/labeler.yaml
+          - .github/labels.json
+          - .github/renovate-global.json
+          - .github/trivy-secret.yaml
+          - .githooks/**
+          - scripts/**
+          - renovate.json
+          - release-please-config.json
+          - .release-please-manifest.json
+
+dependencies:
+  # Renovate's and Dependabot's branches, whatever they change, and
+  # Dependabot's security updates come with a label of their own that
+  # sync-labels would otherwise strip.
+  - head-branch: ['^renovate/', '^dependabot/']

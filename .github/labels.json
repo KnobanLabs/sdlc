@@ -1,0 +1,15 @@
+[
+  { "name": "plugin", "color": "7d8fe0", "description": "The sdlc plugin's skills, agents and tests, and the marketplace catalog" },
+  { "name": "ci", "color": "a3b6ff", "description": "CI workflows, checks and repo automation (.github/)" },
+  { "name": "config", "color": "c2cfff", "description": "Build, editor and tool configuration" },
+  { "name": "documentation", "color": "dde4ff", "description": "Docs, guides and agent instructions" },
+  { "name": "dependencies", "color": "c4b9a3", "description": "Updates a dependency; applied by Renovate, Dependabot and the labeler" },
+  { "name": "triage", "color": "ffe45c", "description": "New; not yet reviewed or prioritized" },
+  { "name": "question", "color": "fff1a8", "description": "An open question; more information is needed" },
+  { "name": "needs decision", "color": "d69a1e", "description": "Waiting on a maintainer decision before work starts" },
+  { "name": "good first issue", "color": "7057ff", "description": "A contained change for a first contribution" },
+  { "name": "help wanted", "color": "008672", "description": "Open for an outside contributor to pick up" },
+  { "name": "tech-debt", "color": "8a1c4a", "description": "Structural debt with a concrete cost; not a user-facing bug" },
+  { "name": "autorelease: pending", "color": "ede6d7", "description": "Release PR not yet released; managed by release-please" },
+  { "name": "autorelease: tagged", "color": "b1a999", "description": "Release PR whose release is tagged; managed by release-please" }
+]

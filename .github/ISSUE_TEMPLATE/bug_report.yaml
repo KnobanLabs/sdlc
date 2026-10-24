@@ -1,0 +1,59 @@
+# Copyright 2026 Knoban LLC
+# SPDX-License-Identifier: MIT
+# (https://github.com/KnobanLabs/sdlc)
+
+name: Bug Report
+description: Something isn't working correctly
+type: Bug
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What happened? What did you expect to happen?
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+      description: The steps that lead to it, as best you can.
+      placeholder: |
+        1. ...
+        2. ...
+        3. ...
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Plugin Version
+      description: The version `claude plugin details sdlc` shows, or a commit.
+      placeholder: '0.24.3, or a1b2c3d'
+    validations:
+      required: true
+
+  - type: input
+    id: claude-code
+    attributes:
+      label: Claude Code Version
+      description: What `claude --version` prints, and where you ran it.
+      placeholder: '2.1.310, terminal (or VS Code, desktop app)'
+    validations:
+      required: true
+
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: Operating system, `gh --version`, model — whatever applies.
+      placeholder: 'macOS 26, gh 2.102.0, Opus 5.5'
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or Error Output
+      description: Paste any errors, stack traces or console output here.
+      render: text

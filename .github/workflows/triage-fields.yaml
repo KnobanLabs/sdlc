@@ -1,0 +1,75 @@
+# Copyright 2026 Knoban LLC
+# SPDX-License-Identifier: MIT
+# (https://github.com/KnobanLabs/sdlc)
+
+# The triage check (scripts/triage-fields.sh): each day it adds the `triage`
+# label to every open issue missing a Priority, an Effort (the organization's
+# issue fields) or an area label, so the issue comes back to the triage queue
+# (CONTRIBUTING.md, Triaging Issues). Adding that label is all it writes: it
+# never sets, changes or clears a field, and never removes a label.
+#
+# It runs with the workflow's own token. Issues read access lets that token
+# read an issue's field values, so no App token is needed. A pull request
+# that changes the check runs it without writing, and shows what it would
+# label in the run's summary.
+name: Triage Fields
+
+permissions: {}
+
+on:
+  schedule:
+    - cron: '43 4 * * *'
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - develop
+    paths:
+      - .github/workflows/triage-fields.yaml
+      - scripts/triage-fields.sh
+
+# One labelling run at a time.
+concurrency:
+  group:
+    ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.ref
+    || 'label' }}
+  cancel-in-progress: false
+
+jobs:
+  # A pull request's run reads and reports, and writes nothing.
+  check:
+    name: Find issues missing triage fields, without writing
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read # To check out the code.
+      issues: read # To list the open issues, their labels and fields.
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Find issues missing triage fields
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: scripts/triage-fields.sh --dry-run
+
+  label:
+    name: Label issues missing triage fields
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read # To check out the code.
+      issues: write # To add the triage label, and read the issues.
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Label issues missing triage fields
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: scripts/triage-fields.sh

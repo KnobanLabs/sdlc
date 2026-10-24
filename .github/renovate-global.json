@@ -1,0 +1,12 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-global-schema.json",
+  "platform": "github",
+  "autodiscover": false,
+  "onboarding": false,
+  "requireConfig": "required",
+  "binarySource": "install",
+  "allowScripts": false,
+  "ignoreScripts": true,
+  "allowPlugins": false,
+  "allowedCommands": []
+}

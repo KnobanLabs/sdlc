@@ -1,0 +1,87 @@
+#!/usr/bin/env bash
+# Copyright 2026 Knoban LLC
+# SPDX-License-Identifier: MIT
+# (https://github.com/KnobanLabs/sdlc)
+
+# Scans what a commit stages for secrets, with the Trivy image and config CI's
+# Scan for secrets step uses, so a secret is stopped before it is committed.
+# Opt in with `scripts/install-hooks.sh` (CONTRIBUTING.md: Secret scan before
+# each commit). It copies the staged version of each added or changed file to a
+# temporary folder, which it always removes, and runs Trivy over it with no
+# network and the folder read-only. It fails when Docker isn't running or
+# can't see the folder, rather than letting the commit through without a scan;
+# SKIP_SECRET_SCAN=1 or `git commit --no-verify` skips it, and CI still scans
+# the push. pre-merge-commit runs it for the merges git commits itself.
+
+set -euo pipefail
+
+# The image validate.yaml's Scan for secrets step runs: keep the two the same.
+# Renovate moves both in one pull request.
+image=ghcr.io/aquasecurity/trivy:0.75.0@sha256:af6acf9a6b85dfe389a1941505c0ce9efef52a4719635e1a962f022a3d855daa
+config=.github/trivy-secret.yaml
+
+if [[ "${SKIP_SECRET_SCAN:-}" == 1 ]]; then
+  echo "pre-commit: SKIP_SECRET_SCAN=1, so the secret scan is skipped." >&2
+  exit 0
+fi
+
+files=$(git diff --cached --name-only --diff-filter=d -z | tr '\0' '\n')
+if [[ -z "$files" ]]; then
+  exit 0
+fi
+
+# checkout-index --ignore-skip-worktree-bits came with git 2.36.
+read -r major minor < <(git version | sed -E 's/^git version ([0-9]+)\.([0-9]+).*/\1 \2/')
+if ! [[ "$major" =~ ^[0-9]+$ && "$minor" =~ ^[0-9]+$ ]] ||
+  ((major < 2 || (major == 2 && minor < 36))); then
+  echo "pre-commit: the secret scan needs git 2.36 or newer, and this is" \
+    "$(git version). Update git, or commit with SKIP_SECRET_SCAN=1." >&2
+  exit 1
+fi
+
+if ! docker info > /dev/null 2>&1; then
+  echo "pre-commit: Docker isn't running, so the staged files can't be scanned" \
+    "for secrets. Start Docker, or commit with SKIP_SECRET_SCAN=1 to skip the" \
+    "scan; CI still runs it." >&2
+  exit 1
+fi
+
+# Trivy ignores a missing config and falls back to rules that skip examples,
+# Markdown and tests, so the scan needs the staged one.
+if ! git cat-file -e ":$config" 2> /dev/null; then
+  echo "pre-commit: $config isn't staged, so the scan would skip examples," \
+    "Markdown and tests. Restore it, or commit with SKIP_SECRET_SCAN=1." >&2
+  exit 1
+fi
+
+# In the clone's git folder rather than the system's temporary one, which a
+# Docker running in a VM, such as Colima's, may not share.
+tree=$(mktemp -d "$(git rev-parse --path-format=absolute --git-common-dir)/secret-scan.XXXXXX")
+trap 'rm -rf "$tree"' EXIT
+
+# The staged versions, as the commit will hold them, at their own paths, with
+# the staged config, which Trivy reads from the same folder. A sparse
+# checkout's index marks files outside it, which are still committed.
+{
+  git diff --cached --name-only --diff-filter=d -z
+  printf '%s\0' "$config"
+} | git checkout-index --force --ignore-skip-worktree-bits \
+  --prefix="$tree/" -z --stdin
+
+# A Docker that can't see the folder mounts an empty one, where Trivy would
+# find nothing and pass, so the scan first checks the config is there.
+if ! docker run --rm --network none -v "$tree:/repo:ro" --entrypoint sh \
+  "$image" -c '
+    if [ ! -f "/repo/$1" ]; then
+      echo "pre-commit: Docker can'\''t see the staged files, so it can'\''t" \
+        "scan them." >&2
+      exit 1
+    fi
+    exec trivy fs --scanners secret --skip-version-check --exit-code 1 \
+      --quiet --secret-config "/repo/$1" /repo
+  ' sh "$config"; then
+  echo "pre-commit: the secret scan failed. Remove the secret from the staged" \
+    "files and commit again; if it found none, the message above says why" \
+    "the scan didn't run." >&2
+  exit 1
+fi

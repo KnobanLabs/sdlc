@@ -1,0 +1,135 @@
+# Copyright 2026 Knoban LLC
+# SPDX-License-Identifier: MIT
+# (https://github.com/KnobanLabs/sdlc)
+
+# Renovate, which proposes every dependency update (renovate.json), run as the
+# Renovate App: a GitHub App KnobanLabs owns, installed on each repository that
+# uses it (CONTRIBUTING.md, Dependency updates). Its global config, which runs
+# none of the repository's code, is .github/renovate-global.json, and
+# RENOVATE_REPOSITORIES below keeps it to this repository.
+#
+# It runs once a week, on Monday at 01:17 UTC, inside the window in which
+# renovate.json's schedule lets it open pull requests, Mondays 00:00 to 06:00
+# UTC. The same run rebases the open pull requests that develop has moved past
+# (renovate.json's rebaseWhen), and moves one on when a newer version is out.
+# A run started by hand proposes what is due at once, outside the window too,
+# unless told to keep to it; a dry run logs what it would do and changes
+# nothing.
+#
+# The App's two secrets are the renovate environment's, which only develop may
+# use. Until both are set, a scheduled run does nothing and passes with a
+# warning, and a run started by hand fails.
+name: Renovate
+
+permissions: {}
+
+on:
+  schedule:
+    # Inside renovate.json's Monday window, with hours to spare should GitHub
+    # start it late.
+    - cron: '17 1 * * 1'
+  workflow_dispatch:
+    inputs:
+      dry-run:
+        description: Log what Renovate would do, and change nothing
+        type: boolean
+        default: false
+      ignore-schedule:
+        description: Propose what is due now, outside the Monday window
+        type: boolean
+        default: true
+      log-level:
+        description: How much Renovate logs
+        type: choice
+        options:
+          - info
+          - debug
+        default: info
+
+# One run at a time, never cancelled part-way, so two never push the same
+# branch.
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+jobs:
+  renovate:
+    name: Run Renovate
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    # Holds the App's secrets. Its deployment branches are develop alone, so a
+    # run from any other branch fails before it starts, with neither secret.
+    environment: renovate
+    # The App token below makes every read and write, so GITHUB_TOKEN needs
+    # nothing.
+    permissions: {}
+
+    steps:
+      # The expressions below say only whether each secret is set, so neither
+      # reaches the script.
+      - name: Check for the Renovate App's secrets
+        id: app
+        env:
+          HAS_CLIENT_ID: ${{ secrets.RENOVATE_APP_CLIENT_ID != '' }}
+          HAS_PRIVATE_KEY: ${{ secrets.RENOVATE_APP_PRIVATE_KEY != '' }}
+          EVENT: ${{ github.event_name }}
+        run: |
+          if [[ "$HAS_CLIENT_ID" == true && "$HAS_PRIVATE_KEY" == true ]]; then
+            echo 'configured=true' >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo 'configured=false' >> "$GITHUB_OUTPUT"
+          message="Renovate didn't run: the renovate environment's secrets RENOVATE_APP_CLIENT_ID and RENOVATE_APP_PRIVATE_KEY aren't both set (CONTRIBUTING.md, Dependency updates)."
+          echo "$message" >> "$GITHUB_STEP_SUMMARY"
+          if [[ "$EVENT" == schedule ]]; then
+            echo "::warning title=Renovate App not set up::$message"
+          else
+            echo "::error title=Renovate App not set up::$message"
+            exit 1
+          fi
+
+      # Not GITHUB_TOKEN, whose pull requests start no workflows, and which
+      # may not open them here (CONTRIBUTING.md). Nor the release App's, which
+      # lacks workflows, and keeps release writes apart from dependency ones.
+      # With no owner or repositories given, the token reaches this repository
+      # alone.
+      - name: Create the Renovate App token
+        id: app-token
+        if: steps.app.outputs.configured == 'true'
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          client-id: ${{ secrets.RENOVATE_APP_CLIENT_ID }}
+          private-key: ${{ secrets.RENOVATE_APP_PRIVATE_KEY }}
+          permission-contents: write # To clone, and push and delete its branches.
+          permission-pull-requests: write # To open, update and close its pull requests.
+          permission-issues: write # To open the issue that reports a broken renovate.json.
+          permission-workflows: write # To move the Actions pins in .github/workflows/.
+          permission-statuses: write # To set its renovate/ statuses, such as the 7-day wait's.
+
+      # For the global config alone: Renovate clones the repository itself.
+      - name: Check out the global config
+        if: steps.app.outputs.configured == 'true'
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          persist-credentials: false
+          sparse-checkout: .github/renovate-global.json
+          sparse-checkout-cone-mode: false
+
+      # The action runs the image by its digest. Renovate's github-actions
+      # manager reads the digest and the version beside it, and moves both.
+      - name: Run Renovate
+        if: steps.app.outputs.configured == 'true'
+        uses: renovatebot/github-action@230ce922b08968d0a4f6f70f295601daff09ef1d # v46.3.7
+        env:
+          LOG_LEVEL: ${{ inputs.log-level || 'info' }}
+          RENOVATE_REPOSITORIES: ${{ github.repository }}
+          RENOVATE_DRY_RUN: ${{ inputs.dry-run && 'full' || '' }}
+          RENOVATE_FORCE:
+            ${{ inputs.ignore-schedule && '{"schedule":["at any time"]}' || ''
+            }}
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          configurationFile: .github/renovate-global.json
+          renovate-image: ghcr.io/renovatebot/renovate@sha256:6f1f3e2d9d0c3f99aa1f61f7509d302185de7deb173ac8c5ff88a5ce283ec435
+          renovate-version: 44.145.1

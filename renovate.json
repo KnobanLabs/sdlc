@@ -1,0 +1,119 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": [
+    "Proposes every dependency update: the GitHub Actions, the images pinned by digest in the workflows and hooks, and the tools the workflows install by version."
+  ],
+  "enabledManagers": [
+    "github-actions",
+    "custom.regex"
+  ],
+  "dependencyDashboard": false,
+  "vulnerabilityAlerts": {
+    "enabled": false
+  },
+  "schedule": [
+    "* 0-5 * * 1"
+  ],
+  "rebaseWhen": "behind-base-branch",
+  "prHourlyLimit": 0,
+  "prConcurrentLimit": 20,
+  "minimumReleaseAge": "7 days",
+  "internalChecksFilter": "strict",
+  "semanticCommits": "enabled",
+  "semanticCommitType": "build",
+  "semanticCommitScope": "deps",
+  "pinDigests": true,
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Images run by digest in the workflows and the hooks, written <image>:<version>@sha256:<digest>.",
+      "managerFilePatterns": [
+        "/^\\.github/workflows/.+\\.ya?ml$/",
+        "/^\\.githooks/.+$/",
+        "/^CONTRIBUTING\\.md$/"
+      ],
+      "matchStrings": [
+        "(?<depName>(?:ghcr\\.io|docker\\.io)/[a-z0-9._/-]+):(?<currentValue>[A-Za-z0-9._-]+)@(?<currentDigest>sha256:[a-f0-9]{64})"
+      ],
+      "datasourceTemplate": "docker"
+    },
+    {
+      "customType": "regex",
+      "description": "Claude Code, which CI installs from npm by version to validate the plugin and the marketplace.",
+      "managerFilePatterns": [
+        "/^\\.github/workflows/.+\\.ya?ml$/"
+      ],
+      "matchStrings": [
+        "npm install [^\\n]*?(?<depName>@anthropic-ai/claude-code)@(?<currentValue>[0-9][^\\s]*)"
+      ],
+      "datasourceTemplate": "npm"
+    },
+    {
+      "customType": "regex",
+      "description": "PyYAML, which CI installs from PyPI by version for the plugin's rule checks.",
+      "managerFilePatterns": [
+        "/^\\.github/workflows/.+\\.ya?ml$/"
+      ],
+      "matchStrings": [
+        "pip install [^\\n]*?(?<depName>pyyaml)==(?<currentValue>[0-9][^\\s]*)"
+      ],
+      "datasourceTemplate": "pypi"
+    }
+  ],
+  "packageRules": [
+    {
+      "description": "Never the runner images in runs-on, while the Actions still move: a new runner image is a pull request of its own.",
+      "matchManagers": [
+        "github-actions"
+      ],
+      "matchDepTypes": [
+        "github-runner"
+      ],
+      "enabled": false
+    },
+    {
+      "description": "The Actions, pinned by commit with the version in a comment: minor and patch updates share one pull request.",
+      "matchManagers": [
+        "github-actions"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "digest"
+      ],
+      "groupName": "actions minor and patch"
+    },
+    {
+      "matchManagers": [
+        "github-actions"
+      ],
+      "semanticCommitType": "ci"
+    },
+    {
+      "description": "The images CI and the hooks run: minor, patch and digest updates share one pull request, and majors each get their own.",
+      "matchManagers": [
+        "custom.regex"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "digest"
+      ],
+      "groupName": "ci images minor and patch",
+      "semanticCommitType": "ci"
+    },
+    {
+      "description": "GHCR gives no release date, so Renovate can't hold its images back 7 days, and without this would never propose them. The pull request says to check the release's age by hand.",
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchPackageNames": [
+        "ghcr.io/**"
+      ],
+      "minimumReleaseAgeBehaviour": "timestamp-optional",
+      "prBodyNotes": [
+        "`{{{depName}}}`'s registry gives no release date, so this pull request didn't wait 7 days: before merging, check on the project's releases that it came out at least 7 days ago."
+      ]
+    }
+  ]
+}

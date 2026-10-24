@@ -1,0 +1,13 @@
+{
+  "name": "KnobanLabs",
+  "owner": { "name": "KnobanLabs", "url": "https://github.com/KnobanLabs" },
+  "description": "Claude Code plugins from KnobanLabs.",
+  "plugins": [
+    {
+      "name": "sdlc",
+      "source": "./plugins/sdlc",
+      "description": "A role-based agent org (technology, marketing, legal, and product trees under a CEO) that runs the software development lifecycle, markets the product, and advises on legal and compliance, on any GitHub repository.",
+      "tags": ["sdlc", "agents", "github", "code-review", "project-management"]
+    }
+  ]
+}

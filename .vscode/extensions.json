@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "EditorConfig.EditorConfig",
+    "github.vscode-github-actions",
+    "redhat.vscode-yaml",
+    "timonwong.shellcheck",
+    "streetsidesoftware.code-spell-checker"
+  ]
+}

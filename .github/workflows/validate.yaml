@@ -1,0 +1,141 @@
+# Copyright 2026 Knoban LLC
+# SPDX-License-Identifier: MIT
+# (https://github.com/KnobanLabs/sdlc)
+
+name: Validate Branch
+
+permissions: {}
+
+on:
+  pull_request:
+    branches:
+      - develop
+  merge_group:
+    branches:
+      - develop
+  workflow_dispatch:
+  # Every night on develop, for what changed underneath it: a new runner
+  # image, or a newer rule in a pinned scanner's database.
+  schedule:
+    - cron: '13 5 * * *'
+
+# A new push cancels a pull request's run. Each merge queue group has a ref of
+# its own, so one queue run never cancels another, and the event in the group
+# keeps the nightly run and a manual run on develop from cancelling each other.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # The checks that need no toolchain. A project adds its own here as steps,
+  # or as jobs of their own listed in validation-outcome's needs.
+  static:
+    name: Static checks
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: read # To check out the code.
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      # The image the pre-commit hook runs too, which keeps the two the same.
+      # Trivy ignores a missing --secret-config and falls back to its allow
+      # rules without a word, so the step checks the file is there.
+      - name: Scan for secrets
+        run: |
+          config=.github/trivy-secret.yaml
+          if [[ ! -f "$config" ]]; then
+            echo "::error::$config is missing, so the scan would skip examples, Markdown and tests."
+            exit 1
+          fi
+          docker run --rm --network none -v "$PWD:/repo:ro" \
+            ghcr.io/aquasecurity/trivy:0.75.0@sha256:af6acf9a6b85dfe389a1941505c0ce9efef52a4719635e1a962f022a3d855daa \
+            fs --scanners secret --skip-version-check --exit-code 1 \
+            --secret-config "/repo/$config" /repo
+
+      # actionlint runs shellcheck over each run: block too, with the
+      # shellcheck its image ships. The runner's can't be mounted in: it is
+      # built for glibc, and the image is Alpine's musl.
+      - name: Lint the workflows
+        run: |
+          docker run --rm --network none -v "$PWD:/repo:ro" -w /repo \
+            docker.io/rhysd/actionlint:1.7.12@sha256:b1934ee5f1c509618f2508e6eb47ee0d3520686341fec936f3b79331f9315667 \
+            -color
+
+      # The workflows' security: template injection, excessive permissions,
+      # unpinned uses, and the dangerous triggers. Offline, so it reads only
+      # the files, never GitHub's API.
+      - name: Audit the workflows
+        run: |
+          docker run --rm --network none -v "$PWD:/repo:ro" -w /repo \
+            ghcr.io/zizmorcore/zizmor:1.31.1@sha256:42d409dbb851d4c5d35a058cf042b828bea1e3f2884378c526eb0974780e18d9 \
+            --offline --persona regular .github/workflows
+
+      - name: Lint the shell scripts
+        run: |
+          mapfile -t scripts < <(git ls-files -z -- 'scripts/*.sh' '.githooks/*' | tr '\0' '\n')
+          shellcheck --external-sources "${scripts[@]}"
+
+  # The plugin's own rule checks, and Claude Code's validation of the plugin
+  # and the marketplace catalog. A marketplace run doesn't open the plugin's
+  # skills and agents, so the plugin is validated on its own too. --strict
+  # fails on warnings, such as an unknown manifest field or a version set in
+  # both manifests.
+  plugin:
+    name: Plugin checks
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: read # To check out the code.
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.13'
+
+      # Claude Code needs Node 22 or newer.
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '22'
+
+      - name: Check the plugin's rules
+        run: |
+          python3 -m pip install --disable-pip-version-check pyyaml==6.0.3
+          python3 plugins/sdlc/tests/check_rules.py plugins/sdlc
+
+      # Pinned to an exact version, which Renovate moves, so a lockfile for
+      # one CLI would add nothing.
+      - name: Validate the plugin and the marketplace
+        run: | # zizmor: ignore[adhoc-packages]
+          npm install --global --no-fund --no-audit @anthropic-ai/claude-code@2.1.302
+          claude plugin validate ./plugins/sdlc --strict
+          claude plugin validate . --strict
+
+  # The one required check. A skipped required check counts as passing, so
+  # this job runs even when the run is cancelled, and fails unless every job
+  # in needs succeeded. A new job joins the requirement by being added to
+  # needs, never to the ruleset.
+  validation-outcome: # zizmor: ignore[anonymous-definition]
+    needs: [static, plugin]
+    if: ${{ always() }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions: {}
+    steps:
+      - name: Check every job passed
+        env:
+          NEEDS: ${{ toJSON(needs) }}
+        run: |
+          failed=$(jq -r 'to_entries[] | select(.value.result != "success") | "\(.key): \(.value.result)"' <<< "$NEEDS")
+          if [[ -n "$failed" ]]; then
+            while IFS= read -r line; do echo "::error::$line"; done <<< "$failed"
+            exit 1
+          fi
+          echo "Every job passed."

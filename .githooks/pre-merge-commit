@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# Copyright 2026 Knoban LLC
+# SPDX-License-Identifier: MIT
+# (https://github.com/KnobanLabs/sdlc)
+
+# git merge and git pull make their merge commits without running pre-commit,
+# so this runs the same secret scan on what a merge stages.
+
+exec "$(dirname "$0")/pre-commit" "$@"

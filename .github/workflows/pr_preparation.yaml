@@ -1,0 +1,55 @@
+# Copyright 2026 Knoban LLC
+# SPDX-License-Identifier: MIT
+# (https://github.com/KnobanLabs/sdlc)
+
+name: ~PR Preparation
+
+# pull_request_target runs this file from the base branch, with a token that
+# can write to fork pull requests too, which labelling needs. That is safe only
+# because no job checks out or runs the pull request's code: both run pinned
+# actions that read the pull request through the API. Keep it that way.
+on: # zizmor: ignore[dangerous-triggers]
+  pull_request_target:
+    types:
+      - opened
+      - edited
+      - synchronize
+
+permissions: {}
+
+# A newer run on a pull request cancels its older one, waiting or running. Only
+# the newest run's checks count, and when runners are short each superseded run
+# would still wait for a runner of its own. pull_request_target sets github.ref
+# to the base branch, so the group is keyed on the pull request's number.
+# Every run lints the title, even for an edit to the body alone: a skipped check
+# would show as passed, over an earlier failure on the same commit.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  # The job id is the required check's name, so it gets no `name:`. This file
+  # never runs in the merge queue, so merge_queue.yaml reports the same check
+  # there under the same job id.
+  pr-lint-title: # zizmor: ignore[anonymous-definition]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      pull-requests: read # To read the pull request's title.
+    steps:
+      - uses: amannn/action-semantic-pull-request@48f256284bd46cdaab1048c3721360e808335d50 # v6.1.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  pr-label:
+    name: Label the pull request
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read # To read the labeler configuration.
+      pull-requests: write # To add and remove the pull request's labels.
+    steps:
+      - uses: actions/labeler@bf12e9b00b37c5c0ca2b87b79b2daf7891dbda13 # v7.0.0
+        with:
+          sync-labels: true
+          configuration-path: .github/labeler.yaml
