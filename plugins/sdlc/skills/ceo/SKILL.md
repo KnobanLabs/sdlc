@@ -29,7 +29,11 @@ part exceeds the span, have that lead plan workstreams, dispatch a workstream
 lead for each yourself, then staff the lead to integrate and sign off
 (`workstreams.md`). A
 request owned by one tree is a fit-check mismatch: recommend that tree's lead,
-or the single role when one role owns all of it.
+or the single role when one role owns all of it. A request that needs a
+repository or tickets for a project with no repository yet, or that asks to
+set one up or bring it in line with SDLC tickets, is a fit-check mismatch too:
+recommend `/sdlc:init`, which they run themselves. A job `/sdlc:init` started has had
+its fit check.
 
 ## Combined run
 
