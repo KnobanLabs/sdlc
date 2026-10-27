@@ -21,11 +21,11 @@ else is isolated by these rules.
 Slots are machine-wide, so sessions and repos running side by side never share
 one. Only agents that run processes or bind ports get one. A conductor claims
 each slot before assigning it: the lowest `<N>` for which
-`mkdir -p ~/.sdlc/slots && mkdir ~/.sdlc/slots/<N>` succeeds, never a block or
-numbering scheme, with an `owner.md` naming the repo, job, task, and time,
-ledgered as a `slot`. A failed `mkdir` means another job holds it; try the next
-number. Slots stop at 286, below every OS's ephemeral ports; past it, queue the
-task and tell the human which jobs hold slots. The brief passes the slot on; a
+`mkdir -p ~/.sdlc/slots && mkdir ~/.sdlc/slots/<N>` succeeds, never a block,
+with an `owner.md` naming the repo, job, task, and time, ledgered as a `slot`. A
+failed `mkdir` means another job holds it; try the next number. Slots stop at
+286, below Linux, macOS, and Windows ephemeral ports; past it, queue the task
+and tell the human which jobs hold slots. The brief passes the slot on; a
 workstream lead uses the slots its brief gives it. A slot whose `owner.md` names
 a job folder that no longer exists is stale: report it, and free it only with
 the human's approval. Derive everything unique from the slot:

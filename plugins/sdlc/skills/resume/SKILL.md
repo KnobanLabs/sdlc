@@ -28,7 +28,7 @@ Load `sdlc:protocol`, its `references/conducting.md`, and its
 3. **Set status** to `active` with the time, and record this session as the
    job's conductor.
 4. **Resume each task,** within the running-agent limit (`conducting.md`; Claude
-   Code doesn't count resumed agents against its own): `SendMessage` to an agent
+   Code doesn't check its own limit on resumes): `SendMessage` to an agent
    this session dispatched (it keeps its context); otherwise, or with `fresh`, a
    fresh worker with the original brief plus its report's **Resume from**, on
    the same slot, worktree, and branch. An `interrupted` task reconciles first
