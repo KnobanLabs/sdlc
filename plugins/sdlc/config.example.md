@@ -36,14 +36,5 @@ Tasks one conductor coordinates directly per run. Larger jobs split into
 workstreams of at most this many tasks, each under a workstream lead.
 - span: 8
 
-## Concurrency
-Agents at once across all layers, excluding expert-review's reviewers. Each
-running agent holds one workspace slot, so this also sets the highest slot
-number. Claude Code refuses subagents past `CLAUDE_CODE_MAX_CONCURRENT_SUBAGENTS`
-(default 20) running at once, so keep agents × (1 + reviewers per round) within
-it; conductors tell you when it, or `CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH`, is too
-low for a job.
-- concurrency: 6
-
 ## Additional standing orders
 - (none)

@@ -40,7 +40,7 @@ Save the full report to `jobs/<job-id>/reports/<task>.md` and return only the
 summary block, so your conductor's context holds one block per task.
 
 ```markdown
-**<task>:** delivered | awaiting review | blocked | sent back | paused. <one-line outcome>
+**<task>:** delivered | awaiting review | blocked | sent back | stopped. <one-line outcome>
 PR or branch: <link> · Review: converged in <N> rounds | pending · Open questions: <N> (inbox Q<n>, ...) · Report: <path>
 ```
 
@@ -48,7 +48,7 @@ Full report:
 
 ```markdown
 # Report: <task>
-**Status:** delivered | awaiting review | blocked | sent back | paused
+**Status:** delivered | awaiting review | blocked | sent back | stopped
 
 ## Summary
 ## Changes
@@ -66,7 +66,7 @@ With full context, and what each blocks.
 ## Follow-ups
 Out-of-scope findings (filed where appropriate).
 ## Resume from
-If paused: what's done, the exact next step, anything half-finished.
+If stopped: what's done, the exact next step, anything half-finished.
 ```
 
 ## Job file
@@ -75,7 +75,7 @@ If paused: what's done, the exact next step, anything half-finished.
 
 ```markdown
 # Job: <job-id>
-**Goal:** <one sentence>  **Status:** active | paused | transferred | closed (<time>)
+**Goal:** <one sentence>  **Status:** active | stopped | transferred | closed (<time>)
 **Conductor:** <this session's role, and when it started or resumed the job>
 
 | Task | Role | Agent ID | Slot | Branch | State |

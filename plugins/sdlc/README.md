@@ -45,11 +45,11 @@ the smallest team that can do the job.
 Skills are invoked as `/sdlc:<skill>`. Any role invoked directly runs its own job.
 `/sdlc:accept <tasks>` records your acceptance and cleans up; `/sdlc:inbox`
 answers waiting questions; `/sdlc:expert-review` reviews any change.
-`/sdlc:pause` brings every agent to a safe stop (finishing its current step,
+`/sdlc:stop` brings every agent to a safe stop (finishing its current step,
 committing and pushing work in progress, stopping its processes);
 `/sdlc:resume` continues from there, in this session or a new one; and
-`/sdlc:transfer` pauses and gives you a prompt that picks the work up in a new
-session.
+`/sdlc:transfer` stops the work and gives you a prompt that picks it up in a
+new session.
 
 ## What to expect
 
@@ -90,23 +90,21 @@ session.
 - **Model and effort** follow your session, except expert-review's reviewers,
   which the read-only `expert-reviewer` agent pins to Opus 5.5 at High. Don't add
   `effort` to the other agent files.
-- **Concurrency:** 6 agents at once by default (`- concurrency:` in config),
-  each running its own review rounds, to stay under Claude Code's default limit
-  of 20 running subagents.
 - **Large jobs:** a conductor coordinates at most 8 tasks per run directly
   (`- span:` in config). Beyond that, the work splits into workstreams, each run
-  by a workstream lead (a CTO or CMO in lead mode) that staffs, integrates, and,
-  for technical work, merges its slice. The top conductor dispatches every lead
-  and keeps cross-workstream integration. Workers return a short summary and
+  by a workstream lead (a CTO, CMO, CLO, or CPO in lead mode) that staffs,
+  integrates, and, for technical work, merges its slice. The top conductor
+  dispatches every lead and keeps cross-workstream integration. Workers return a short summary and
   save full reports to the job folder, keeping each conductor's context small.
 
 ## Layout
 
 | Path | Contents |
 |---|---|
-| `skills/protocol/` | The shared protocol every role loads, plus references (conducting, workstreams, pausing, approvals, workspace, GitHub, screenshots, repo profile, legal, design, templates) |
-| `skills/<role>/` | Nineteen role skills, plus `accept`, `inbox`, `pause`, `resume`, `transfer`, and `expert-review` |
+| `skills/protocol/` | The shared protocol every role loads, plus references (conducting, workstreams, stopping, approvals, workspace, GitHub, screenshots, repo profile, legal, design, templates) |
+| `skills/<role>/` | Nineteen role skills, plus `accept`, `inbox`, `resume`, `stop`, `transfer`, and `expert-review` |
 | `agents/` | Worker definitions for every role except the CEO, plus the read-only `expert-reviewer` |
+| `evals/` | Behavior cases for `claude plugin eval`, each run with and without the plugin: routing to each role (tag `smoke`), protocol rules such as fit checks and team planning (`protocol`), and untrusted ticket and comment text (`security`) |
 | `tests/check_rules.py` | Verifies every recorded decision is still stated and removed features stay removed. It also enforces token budgets on the files agents load most. Run `python3 tests/check_rules.py` after any edit (needs PyYAML); update its entry when a decision changes, and raise a budget only on purpose |
 
 Local state lives in `~/.sdlc/`: config, and per-repo profiles and jobs.

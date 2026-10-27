@@ -25,6 +25,9 @@ Thumbs.db
 # agents' local settings
 .claude/settings.local.json
 
+# the plugin's eval runs: reports and transcripts from your own account
+plugins/sdlc/evals/results/
+
 # Python, for the plugin's rule checks
 __pycache__/
 *.pyc

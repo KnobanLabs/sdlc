@@ -1,13 +1,13 @@
 ---
 name: transfer
-description: Pause this session's SDLC jobs and hand them off, giving the human a prompt that picks the work back up in a new session. Human-invoked only.
+description: Stop this session's SDLC jobs and hand them off, giving the human a prompt that picks the work back up in a new session. Human-invoked only.
 disable-model-invocation: true
 argument-hint: "[job-id | #ticket] [same-machine]"
 ---
 
 # Transfer
 
-Load `sdlc:protocol` and its `references/pausing.md`.
+Load `sdlc:protocol` and its `references/stopping.md`.
 
 **Arguments** (any order, all optional):
 
@@ -17,7 +17,7 @@ Load `sdlc:protocol` and its `references/pausing.md`.
 | `#<ticket>` | Transfer only that ticket's task; this session keeps the rest. |
 | `same-machine` | Minimal handoff that relies on this machine's local state. |
 
-1. **Pause** the scope as `/sdlc:pause` does (branches are pushed, so another
+1. **Stop** the scope as `/sdlc:stop` does (branches are pushed, so another
    machine can continue).
 2. **One ticket:** move its task into a new job (new job id and folder) with its
    ledger entries, slot, claim, report, and inbox questions, and mark it

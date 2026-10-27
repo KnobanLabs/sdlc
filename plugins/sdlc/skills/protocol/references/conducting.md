@@ -22,7 +22,7 @@ human checks it; never ask them in the conversation. Below it, decide yourself,
 choosing what best fits the human's original request, and log the decision in the
 inbox. Critical questions always go to the inbox; never decide them.
 
-**Don't wait:** only work that depends on an open question pauses; everything else
+**Don't wait:** only work that depends on an open question waits; everything else
 continues. When no unblocked work remains, stop with one line: how many questions
 are waiting and that `/sdlc:inbox` will ask them. Don't ask or list them there.
 
@@ -57,26 +57,23 @@ than raw output. Other roles conducting themselves do their own work.
   role only when it would change the outcome: the Architect for structural or
   interface changes, QA for user-facing behavior or criteria the author's tests
   don't prove, Security or the legal tree when the work materially touches
-  their areas. The span and concurrency limits are ceilings, not targets.
+  their areas. The span and Claude Code limits are ceilings, not targets.
 - **Span of control:** coordinate at most **8** tasks per run directly
   (`- span:` in `~/.sdlc/config.md`), counting every task you brief over the
   run, not only those running at once. Split a larger part into workstreams
   (`workstreams.md`).
-- **Concurrency:** at most **6** agents at once across all layers, not counting
-  `sdlc:expert-review`'s reviewers, unless the human sets another limit (in the
-  request, or `- concurrency:` in `~/.sdlc/config.md`). Queue the rest. Claude
-  Code refuses new subagents past `CLAUDE_CODE_MAX_CONCURRENT_SUBAGENTS`
-  running at once (default 20), so keep agents × (1 + reviewers per round)
-  within it (6 × 3 = 18 at the defaults).
 - **Claude Code limits:** at job start, compare the plan with
   `CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH` (default 3; the plan needs 2 for
   workers' own reviews, 3 with workstream leads) and
   `CLAUDE_CODE_MAX_CONCURRENT_SUBAGENTS` (default 20; the plan needs
   agents × (1 + reviewers)). Read them with `printenv`; unset means the default.
-  If either is too low for the plan, or the concurrency the human set, tell the
-  human which to change and to what (`env` in `~/.claude/settings.json`, in a
-  new session), then continue within the current limits. This is a notice, not
-  a question.
+  If either is too low for the plan, tell the human which to change and to
+  what (`env` in `~/.claude/settings.json`, in a new session), then continue
+  within the current limits. This is a notice, not a question.
+- **Running agents:** at most `CLAUDE_CODE_MAX_CONCURRENT_SUBAGENTS` ÷
+  (1 + reviewers per round), rounded down, across all layers (6 at the
+  defaults), since Claude Code refuses spawns past its limit and nothing
+  retries them. Queue the rest and dispatch each as a running agent returns.
 
 ## Start
 
@@ -106,13 +103,13 @@ than raw output. Other roles conducting themselves do their own work.
    existing folder fails instead of being shared; on failure, pick a new
    suffix. Add `job.md`, `ledger.md`, `inbox.md`, and `reports/`.
 8. **Dispatch** with complete briefs (`templates.md`): slots, non-overlapping file
-   ownership, and branch names with the issue number, within the concurrency
-   limit.
+   ownership, and branch names with the issue number, within Claude Code's
+   limits.
 
 ## Run
 
 - Track every task's lifecycle state in `job.md`, with the ID of the agent
-  doing it, so `/sdlc:pause` can reach it.
+  doing it, so `/sdlc:stop` can reach it.
 - Workers save their full report to `reports/` and return only the summary
   block (`templates.md`). Open a full report only when a decision needs it.
 - Relay questions verbatim when workers can't message each other.
