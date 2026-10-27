@@ -30,7 +30,8 @@ claude plugin install sdlc@KnobanLabs
 ```
 
 Then finish setup with the [Quick start](plugins/sdlc/README.md#quick-start)
-(your config file and attribution settings) and ask for work, such as
+(your config file and attribution settings). Run `/sdlc:init` to set up a new
+project, or to bring an existing repository in line, and ask for work, such as
 "Engineer, fix #57" or "CEO, work tickets #12 to #18 and QA the app". Skills
 are invoked as `/sdlc:<skill>`.
 

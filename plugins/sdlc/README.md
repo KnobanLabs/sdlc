@@ -29,7 +29,12 @@ the smallest team that can do the job.
    workstream leads need 3 (the default). Conductors check this and
    `CLAUDE_CODE_MAX_CONCURRENT_SUBAGENTS` at job start and tell you if either is
    too low.
-6. Ask for work: "Engineer, fix #57", "QA, find bugs", "CEO, work tickets #12
+6. Starting a project, or bringing an existing repository or GitHub Project in
+   line? Run `/sdlc:init`. It asks what you want to build and how, recommends
+   an answer to every setup question, and then creates or adjusts the
+   repository, its settings and protections, and a Project board with its
+   fields, views, and workflows. A team you choose then seeds the backlog.
+7. Ask for work: "Engineer, fix #57", "QA, find bugs", "CEO, work tickets #12
    to #18 and QA the app". A role invoked without a task asks what to work on.
 
 ## The org
@@ -43,8 +48,10 @@ the smallest team that can do the job.
 | Product, under the Chief Product Officer (`cpo`) | PM, Data Analyst, Product Designer (`pm`, `analyst`, `product-designer`) |
 
 Skills are invoked as `/sdlc:<skill>`. Any role invoked directly runs its own job.
-`/sdlc:accept <tasks>` records your acceptance and cleans up; `/sdlc:inbox`
-answers waiting questions; `/sdlc:expert-review` reviews any change.
+`/sdlc:init [owner/repo] [project]` sets up a new project, or adopts an
+existing repository or Project; `/sdlc:accept <tasks>` records your acceptance
+and cleans up; `/sdlc:inbox` answers waiting questions; `/sdlc:expert-review`
+reviews any change.
 `/sdlc:stop` brings every agent to a safe stop (finishing its current step,
 committing and pushing work in progress, stopping its processes);
 `/sdlc:resume` continues from there, in this session or a new one; and
@@ -103,7 +110,8 @@ new session.
 | Path | Contents |
 |---|---|
 | `skills/protocol/` | The shared protocol every role loads, plus references (conducting, workstreams, stopping, approvals, workspace, GitHub, screenshots, repo profile, legal, design, templates) |
-| `skills/<role>/` | Nineteen role skills, plus `accept`, `inbox`, `resume`, `stop`, `transfer`, and `expert-review` |
+| `skills/<role>/` | Nineteen role skills, plus `accept`, `inbox`, `init`, `resume`, `stop`, `transfer`, and `expert-review` |
+| `skills/init/references/` | Init's interview and defaults, its GitHub setup (settings, rulesets, the Project and its views, and the steps that need a browser), and the files it writes |
 | `agents/` | Worker definitions for every role except the CEO, plus the read-only `expert-reviewer` |
 | `evals/` | Behavior cases for `claude plugin eval`, each run with and without the plugin: routing to each role (tag `smoke`), protocol rules such as fit checks and team planning (`protocol`), and untrusted ticket and comment text (`security`) |
 | `tests/check_rules.py` | Verifies every recorded decision is still stated and removed features stay removed. It also enforces token budgets on the files agents load most. Run `python3 tests/check_rules.py` after any edit (needs PyYAML); update its entry when a decision changes, and raise a budget only on purpose |
