@@ -54,6 +54,9 @@ RULES = [
     ("Running agents: concurrent limit ÷ (1 + reviewers), rounded down", R + "conducting.md", r"at most `CLAUDE_CODE_MAX_CONCURRENT_SUBAGENTS` ÷\s+\(1 \+ reviewers per round\), rounded down"),
     ("Queue agents past the running limit", R + "conducting.md", r"Queue the rest and dispatch each as a running agent returns"),
     ("Lead budgets split the running-agent limit", R + "workstreams.md", r"Budgets split the\s+running-agent limit.*so together they never exceed it"),
+    ("Lead budgets are at least 2; queue the leads past that", R + "workstreams.md", r"Each budget is at least\s+2 \(the lead and one worker\)"),
+    ("Running-agent limit too low stops the plan", R + "conducting.md", r"Below 1 \(2 with workstream leads\), the plan can't run"),
+    ("Dispatch and resume within the running-agent limit", "skills/resume/SKILL.md", r"within the running-agent limit \(`conducting\.md`"),
     ("Job folders hold full reports in reports/", P, r"`reports/` for full worker reports"),
     ("No Agent tool: lead returns a plan, author reports awaiting review", P, r"a lead returns a staffed plan"),
     ("Non-worktree agents treat the checkout as read-only", P, r"read-only"),
@@ -65,7 +68,8 @@ RULES = [
     ("Slots claimed atomically with mkdir", R + "workspace.md", r"mkdir -p ~/\.sdlc/slots && mkdir ~/\.sdlc/slots/<N>"),
     ("Slots go to the lowest free number, never a block", R + "workspace.md", r"succeeds, never a block or\s+numbering scheme"),
     ("Slots only for agents that run processes or bind ports", R + "workspace.md", r"Only agents that run processes or bind ports get one"),
-    ("Slots stop at 450, below the ephemeral port range", R + "workspace.md", r"Slots stop at 450, below the ephemeral port range"),
+    ("Slots stop at 286, below every OS's ephemeral ports", R + "workspace.md", r"Slots stop at 286, below every OS's ephemeral ports"),
+    ("Slots past the ceiling queue and name the holders", R + "workspace.md", r"past it, queue the task and tell the human which jobs hold slots"),
     ("Stale slots freed only with approval", R + "workspace.md", r"free it only with the human's approval"),
     ("Cleanup frees slots and claims after checking ownership", R + "workspace.md", r"each after checking its `owner\.md`\s+names this job and task"),
     ("Ledger types include slots and claims", R + "templates.md", r"lease, slot, claim"),
@@ -351,7 +355,7 @@ def norm(text):
 
 def files(pattern):
     paths = glob.glob(os.path.join(ROOT, pattern), recursive=True)
-    return [p for p in paths if os.path.isfile(p) and "/tests/" not in p]
+    return [p for p in paths if os.path.isfile(p) and "/tests/" not in p and "/evals/results/" not in p]
 
 
 def frontmatter(path):

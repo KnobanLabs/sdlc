@@ -94,8 +94,9 @@ new session.
   (`- span:` in config). Beyond that, the work splits into workstreams, each run
   by a workstream lead (a CTO, CMO, CLO, or CPO in lead mode) that staffs,
   integrates, and, for technical work, merges its slice. The top conductor
-  dispatches every lead and keeps cross-workstream integration. Workers return a short summary and
-  save full reports to the job folder, keeping each conductor's context small.
+  dispatches every lead and keeps cross-workstream integration. Workers return
+  a short summary and save full reports to the job folder, keeping each
+  conductor's context small.
 
 ## Layout
 

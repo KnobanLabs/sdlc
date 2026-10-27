@@ -74,6 +74,8 @@ than raw output. Other roles conducting themselves do their own work.
   (1 + reviewers per round), rounded down, across all layers (6 at the
   defaults), since Claude Code refuses spawns past its limit and nothing
   retries them. Queue the rest and dispatch each as a running agent returns.
+  Below 1 (2 with workstream leads), the plan can't run: say so in the limits
+  notice, with the value it needs, and dispatch nothing.
 
 ## Start
 
@@ -103,8 +105,8 @@ than raw output. Other roles conducting themselves do their own work.
    existing folder fails instead of being shared; on failure, pick a new
    suffix. Add `job.md`, `ledger.md`, `inbox.md`, and `reports/`.
 8. **Dispatch** with complete briefs (`templates.md`): slots, non-overlapping file
-   ownership, and branch names with the issue number, within Claude Code's
-   limits.
+   ownership, and branch names with the issue number, within the running-agent
+   limit.
 
 ## Run
 

@@ -14,8 +14,9 @@ every lead itself:
 Each lead's brief gives its workstream (tasks, scope, file ownership), the job id,
 its agent budget (counting itself), and its slot numbers. Budgets split the
 running-agent limit (`conducting.md`) across the leads, less what the top
-conductor runs itself, so together they never exceed it. A single workstream may
-hold a whole tree's part when it fits the span.
+conductor runs itself, so together they never exceed it. Each budget is at least
+2 (the lead and one worker); dispatch only the leads that allows, and queue the
+rest. A single workstream may hold a whole tree's part when it fits the span.
 
 A lead follows `conducting.md`, except:
 
