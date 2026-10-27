@@ -19,14 +19,16 @@ else is isolated by these rules.
 ## 2. Slots
 
 Slots are machine-wide, so sessions and repos running side by side never share
-one. A conductor claims each slot before assigning it: the lowest `<N>` for
-which `mkdir -p ~/.sdlc/slots && mkdir ~/.sdlc/slots/<N>` succeeds, with an
-`owner.md` naming the repo, job, task, and time, ledgered as a `slot`. A failed
-`mkdir` means another job holds it; try the next number. The brief passes the
-slot on; a workstream lead uses the slots its brief gives it. Reviewers need no
-slot. A slot whose `owner.md` names a job folder that no longer exists is stale:
-report it, and free it only with the human's approval. Derive everything unique
-from the slot:
+one. Only agents that run processes or bind ports get one. A conductor claims
+each slot before assigning it: the lowest `<N>` for which
+`mkdir -p ~/.sdlc/slots && mkdir ~/.sdlc/slots/<N>` succeeds, never a block,
+with an `owner.md` naming the repo, job, task, and time, ledgered as a `slot`. A
+failed `mkdir` means another job holds it; try the next number. Slots stop at
+286, below Linux, macOS, and Windows ephemeral ports; past it, queue the task
+and tell the human which jobs hold slots. The brief passes the slot on; a
+workstream lead uses the slots its brief gives it. A slot whose `owner.md` names
+a job folder that no longer exists is stale: report it, and free it only with
+the human's approval. Derive everything unique from the slot:
 
 - **Ports:** `4000 + slot × 100` through `+ 99`, unless the profile defines
   another scheme. Higher slots can overlap common service ports (5432, 6379,

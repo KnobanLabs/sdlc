@@ -21,6 +21,7 @@ MIT License. Users install it with
 | `plugins/sdlc/skills/`            | One folder per skill; `protocol/` is the shared protocol every role loads |
 | `plugins/sdlc/agents/`            | Worker definitions for every role except the CEO                      |
 | `plugins/sdlc/tests/check_rules.py` | Recorded decisions, removed features, structure and token budgets   |
+| `plugins/sdlc/evals/`             | Behavior cases for `claude plugin eval`, one folder per case          |
 
 ## Dev Commands
 
@@ -31,10 +32,15 @@ python3 plugins/sdlc/tests/check_rules.py plugins/sdlc  # the plugin's rule chec
 claude plugin validate ./plugins/sdlc --strict          # the plugin's manifest, skills and agents
 claude plugin validate . --strict                       # the marketplace catalog
 claude --plugin-dir ./plugins/sdlc                      # a session with the working copy loaded
+claude plugin eval ./plugins/sdlc --tag smoke           # the cheap behavior cases, with and without the plugin
+claude plugin eval ./plugins/sdlc --threshold 0.8       # every behavior case; uses your plan's usage
 ```
 
 CI runs the rule checks and both validations in `Validate Branch`
-(`.github/workflows/validate.yaml`), with the versions pinned there.
+(`.github/workflows/validate.yaml`), with the versions pinned there. The
+behavior evals run locally only: each run is a real model call on your account.
+Run them after changing a skill's description or a rule they cover, and add a
+case when an agent misbehaves in a way a rule should have prevented.
 
 ## Plugin Rules
 

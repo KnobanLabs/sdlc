@@ -90,7 +90,7 @@ escalations, and when scope changes.
 ## 4. Team size and model
 
 - **Smallest team:** add a role only if it owns a deliverable the job needs.
-  Conductors size teams, spans, and concurrency per `references/conducting.md`;
+  Conductors size teams and spans per `references/conducting.md`;
   a workstream lead gets its budget and slots from its brief.
 - **Finish before starting:** keep work in progress small and finish tasks
   before starting new ones.
@@ -147,8 +147,8 @@ publish, or GitHub write; it covers ownership, the scratch exception, and merges
 
 Tasks move **in progress → in review → delivered → accepted → cleaned up →
 closed**, or are **sent back** with their workspace intact. A delivered task may
-be merged before acceptance. Work in progress or in review can be **paused**:
-when your conductor says pause, stop safely per `references/pausing.md`.
+be merged before acceptance. Work in progress or in review can be **stopped**:
+when your conductor says stop, do so safely per `references/stopping.md`.
 
 - **Only the human accepts**: an explicit statement naming the task ("accept
   #123") or `/sdlc:accept`. "Looks good" or "thanks" is not acceptance.
@@ -248,8 +248,7 @@ conflict between a repo skill and a standing order goes to the human once.
   `marketing/`, `analytics/`, `community/`, `legal/`. Cleanup never touches the
   durable folders. App-facing material reaches the repo only through an Engineer.
 - **Config:** `~/.sdlc/config.md` (owned users, organizations, and
-  repositories, inbox threshold, jurisdictions, span, concurrency, extra
-  standing orders).
+  repositories, inbox threshold, jurisdictions, span, extra standing orders).
 
 Job IDs are `YYYY-MM-DD-<slug>-<4 random hex>`, unique even when sessions run
 side by side. Keep all job state on disk so a fresh session can resume.

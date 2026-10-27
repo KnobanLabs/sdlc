@@ -30,7 +30,7 @@ RULES = [
     ("Conductor and worker modes", P, r"\*\*conductor\*\*.*\*\*worker\*\*"),
     ("Nesting: workers spawn their own reviewers", P, r"Workers spawn `sdlc:expert-review`'s reviewers themselves"),
     ("Only conductors spawn SDLC roles", P, r"Only conductors spawn SDLC roles"),
-    ("CTO or CMO workers may run as workstream leads", P, r"may run as a \*\*workstream lead\*\*"),
+    ("Tree-lead workers may run as workstream leads", P, r"may run as a \*\*workstream lead\*\*"),
     ("Top conductor dispatches every lead; leads' workers never lead", R + "workstreams.md", r"leads never dispatch leads and their workers never lead"),
     ("Proportional staffing: size to the job, not the org chart", R + "conducting.md", r"size the team to the job, not the org chart"),
     ("Proportional: agents and hand-offs count, not just roles", R + "conducting.md", r"counting agents and hand-offs as well as roles"),
@@ -51,6 +51,13 @@ RULES = [
     ("Alert the human when spawn depth is too low", R + "conducting.md", r"CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH` \(default 3; the plan needs 2.*3 with workstream leads\)"),
     ("Alert the human when concurrent subagents are too low", R + "conducting.md", r"CLAUDE_CODE_MAX_CONCURRENT_SUBAGENTS` \(default 20; the plan needs"),
     ("Limit alerts are notices, then continue within limits", R + "conducting.md", r"tell the\s+human which to change and to what.*continue within the current limits.*a notice, not\s+a question"),
+    ("Running agents: concurrent limit ÷ (1 + reviewers), rounded down", R + "conducting.md", r"at most `CLAUDE_CODE_MAX_CONCURRENT_SUBAGENTS` ÷\s+\(1 \+ reviewers per round\), rounded down"),
+    ("Queue agents past the running limit", R + "conducting.md", r"Queue the rest and dispatch each as a running agent returns"),
+    ("Lead budgets split the running-agent limit", R + "workstreams.md", r"Budgets split the\s+running-agent limit.*so together they never exceed it"),
+    ("Lead budgets are at least 2; queue the leads past that", R + "workstreams.md", r"Each budget is at least\s+2 \(the lead and one worker\)"),
+    ("Running-agent limit too low stops the plan", R + "conducting.md", r"Below 1 \(2 with workstream leads\), the plan can't run"),
+    ("Resume within the running-agent limit", "skills/resume/SKILL.md", r"within the running-agent limit \(`conducting\.md`"),
+    ("Dispatch within the running-agent limit", R + "conducting.md", r"Dispatch\*\*.*within the running-agent\s+limit"),
     ("Job folders hold full reports in reports/", P, r"`reports/` for full worker reports"),
     ("No Agent tool: lead returns a plan, author reports awaiting review", P, r"a lead returns a staffed plan"),
     ("Non-worktree agents treat the checkout as read-only", P, r"read-only"),
@@ -58,12 +65,12 @@ RULES = [
     ("Fit check first; ask the human right away on a mismatch", P, r"ask the human first,\*\* right away with the fit-check template"),
     ("Workers and sub-conductors return fit checks up the chain", P, r"A worker or workstream lead returns its fit check to\s+its conductor"),
     ("Smallest team", P, r"Smallest team"),
-    ("Max 6 agents across layers, excluding expert-review reviewers", R + "conducting.md", r"at most \*\*6\*\* agents at once across all layers.{0,80}expert-review"),
-    ("Budget within Claude Code's concurrent-subagent cap", R + "conducting.md", r"CLAUDE_CODE_MAX_CONCURRENT_SUBAGENTS`\s+running at once \(default 20\).*within\s+it"),
-    ("Concurrency limit set by the concurrency config key", R + "conducting.md", r"`- concurrency:` in `~/\.sdlc/config\.md`"),
-    ("Config template: concurrency as a name: value line", "config.example.md", r"- concurrency: 6"),
     ("Slots are machine-wide across sessions and repos", R + "workspace.md", r"Slots are machine-wide"),
     ("Slots claimed atomically with mkdir", R + "workspace.md", r"mkdir -p ~/\.sdlc/slots && mkdir ~/\.sdlc/slots/<N>"),
+    ("Slots go to the lowest free number, never a block", R + "workspace.md", r"succeeds, never a block,"),
+    ("Slots only for agents that run processes or bind ports", R + "workspace.md", r"Only agents that run processes or bind ports get one"),
+    ("Slots stop at 286, below Linux, macOS, and Windows ephemeral ports", R + "workspace.md", r"Slots stop at\s+286, below Linux, macOS, and Windows ephemeral ports"),
+    ("Slots past the ceiling queue and name the holders", R + "workspace.md", r"past it, queue the task and tell the human which jobs hold slots"),
     ("Stale slots freed only with approval", R + "workspace.md", r"free it only with the human's approval"),
     ("Cleanup frees slots and claims after checking ownership", R + "workspace.md", r"each after checking its `owner\.md`\s+names this job and task"),
     ("Ledger types include slots and claims", R + "templates.md", r"lease, slot, claim"),
@@ -281,32 +288,32 @@ RULES = [
     ("Community routes legal notices privately", "skills/community/SKILL.md", r"legal notices such as\s+takedowns"),
     ("Config template: jurisdictions", "config.example.md", r"- jurisdictions:"),
     ("Repo profile: legal and compliance section", R + "repo-profile.md", r"\*\*Legal and compliance:\*\*"),
-    # Pause, resume, transfer
-    ("pause is human-only", "skills/pause/SKILL.md", r"disable-model-invocation: true"),
+    # Stop, resume, transfer
+    ("stop is human-only", "skills/stop/SKILL.md", r"disable-model-invocation: true"),
     ("resume is human-only", "skills/resume/SKILL.md", r"disable-model-invocation: true"),
     ("transfer is human-only", "skills/transfer/SKILL.md", r"disable-model-invocation: true"),
-    ("Pause reaches agents by SendMessage to recorded IDs", "skills/pause/SKILL.md", r"`SendMessage` to the agent ID\s+in `job\.md`"),
-    ("Leads pass the pause to their workers", R + "pausing.md", r"lead messages each of its workers by agent ID"),
-    ("Safe stop: finish current step, start nothing new", R + "pausing.md", r"Finish the step you\'re on,\*\* and start nothing new"),
-    ("Pause commits and pushes WIP to own branch", R + "pausing.md", r"Commit and push\*\* work in progress to your own branch"),
-    ("Pause stops processes, keeps worktree, slot, claim", R + "pausing.md", r"Stop\*\* your processes.*Keep your worktree, branch, databases, slot, and ticket claim"),
-    ("Paused tasks write Resume from", R + "pausing.md", r"Write a Resume from\*\* section"),
+    ("Stop reaches agents by SendMessage to recorded IDs", "skills/stop/SKILL.md", r"`SendMessage` to the agent ID\s+in `job\.md`"),
+    ("Leads pass the stop to their workers", R + "stopping.md", r"lead messages each of its workers by agent ID"),
+    ("Safe stop: finish current step, start nothing new", R + "stopping.md", r"Finish the step you\'re on,\*\* and start nothing new"),
+    ("Stop commits and pushes WIP to own branch", R + "stopping.md", r"Commit and push\*\* work in progress to your own branch"),
+    ("Stop halts processes, keeps worktree, slot, claim", R + "stopping.md", r"Stop\*\* your processes.*Keep your worktree, branch, databases, slot, and ticket claim"),
+    ("Stopped tasks write Resume from", R + "stopping.md", r"Write a Resume from\*\* section"),
     ("Resume via SendMessage, else fresh worker from report", "skills/resume/SKILL.md", r"fresh worker with the original brief plus its report\'s \*\*Resume from\*\*"),
-    ("pause now: TaskStop, mark stopped", "skills/pause/SKILL.md", r"`TaskStop` every agent you dispatched.*mark their tasks `stopped`"),
-    ("Stopped tasks reconcile their worktree on resume", R + "pausing.md", r"Resuming a `stopped` task.*review uncommitted changes against the last commit"),
-    ("Pause takes job, ticket, now", "skills/pause/SKILL.md", r"\[job-id \| #ticket\] \[now\]"),
+    ("stop now: TaskStop, mark interrupted", "skills/stop/SKILL.md", r"`TaskStop` every agent you dispatched.*mark their tasks `interrupted`"),
+    ("Interrupted tasks reconcile their worktree on resume", R + "stopping.md", r"Resuming an `interrupted` task.*review uncommitted changes against the last commit"),
+    ("Stop takes job, ticket, now", "skills/stop/SKILL.md", r"\[job-id \| #ticket\] \[now\]"),
     ("Resume takes job, ticket, fresh", "skills/resume/SKILL.md", r"\[job-id \| #ticket\] \[fresh\]"),
     ("Transfer takes job, ticket, same-machine", "skills/transfer/SKILL.md", r"\[job-id \| #ticket\] \[same-machine\]"),
     ("Transferring one ticket moves it into a new job", "skills/transfer/SKILL.md", r"move its task into a new job"),
     ("same-machine handoff is the minimal two lines", "skills/transfer/SKILL.md", r"With `same-machine`, only the first two lines"),
-    ("A paused job dispatches nothing", R + "pausing.md", r"A paused job dispatches nothing"),
+    ("A stopped job dispatches nothing", R + "stopping.md", r"A stopped job dispatches nothing"),
     ("job.md records agent IDs", R + "templates.md", r"\| Task \| Role \| Agent ID \|"),
-    ("Pause scoped to this session's jobs", "skills/pause/SKILL.md", r"this session's jobs, or the job or ticket named"),
-    ("Pause never kills unresponsive agents", "skills/pause/SKILL.md", r"report it rather than killing it"),
+    ("Stop scoped to this session's jobs", "skills/stop/SKILL.md", r"this session's jobs, or the job or ticket named"),
+    ("Stop never kills unresponsive agents", "skills/stop/SKILL.md", r"report it rather than killing it"),
     ("Resume asks before adopting a job active elsewhere", "skills/resume/SKILL.md", r"ask the\s+human before adopting it"),
     ("Transfer marks the job transferred", "skills/transfer/SKILL.md", r"Mark\*\* each transferred job `transferred`"),
     ("Transfer handoff in chat and a file, standing alone", "skills/transfer/SKILL.md", r"handoff\.md` and show it in chat.*standing alone"),
-    ("Protocol: paused is a lifecycle state", P, r"can be \*\*paused\*\*"),
+    ("Protocol: stopped is a lifecycle state", P, r"can be \*\*stopped\*\*"),
     # expert-review behavior
     ("ER defaults: 2 reviewers, 5 rounds", ER, r"\| X \| reviewers per round \| 2 \|.*\| Y \| maximum rounds \| 5 \|"),
     ("ER never silently degrades", ER, r"never silently degrade"),
@@ -338,6 +345,7 @@ FORBIDDEN = [
     ("Designer split into Brand and Product Designer", "**/*", r"sdlc:designer|`designer`|skills/designer|\bthe Designer\b"),
     ("Enterprise ownership entries removed", "**/*", r"### Enterprises|read:enterprise|sdlc/enterprises|Listed enterprises"),
     ("Pause flags no-push and keep-running removed", "**/*", r"no-push|keep-running"),
+    ("Pause renamed to stop", "**/*", r"sdlc:pause|skills/pause|`paused`|chore\(wip\): pause"),
     ("Outdated no-nesting claim removed", "**/*", r"Execution is flat|plain subagent cannot spawn|Plain subagents can't"),
 ]
 
@@ -348,7 +356,7 @@ def norm(text):
 
 def files(pattern):
     paths = glob.glob(os.path.join(ROOT, pattern), recursive=True)
-    return [p for p in paths if os.path.isfile(p) and "/tests/" not in p]
+    return [p for p in paths if os.path.isfile(p) and "/tests/" not in p and "/evals/results/" not in p]
 
 
 def frontmatter(path):
@@ -411,7 +419,7 @@ FILE_BUDGETS = {  # files loaded by most agents or every conductor, about 5% hea
     R + "templates.md": 1300,
     R + "conducting.md": 2200,
     R + "approvals.md": 1150,
-    R + "pausing.md": 400,
+    R + "stopping.md": 400,
 }
 
 
