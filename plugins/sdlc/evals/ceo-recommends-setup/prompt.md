@@ -1,5 +1,5 @@
 ---
-description: A CEO asked to start a project from nothing recommends the human-run init command instead of setting it up itself.
+description: A CEO asked to start a project from nothing recommends the human-run setup command instead of setting it up itself.
 tags: [protocol]
 max_turns: 10
 timeout_seconds: 600

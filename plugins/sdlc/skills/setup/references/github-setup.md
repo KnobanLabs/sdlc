@@ -1,6 +1,6 @@
-# Init: GitHub setup
+# Setup: GitHub
 
-The settings, protections, and Project that init applies, as `gh` commands.
+The settings, protections, and Project that `/sdlc:setup` applies, as `gh` commands.
 `<owner>/<repo>` is the repository; `$repo` stands for it in shell. `<branch>`
 is the default branch: `develop` unless the answers or the audit say otherwise.
 Every step may run again: it sets what is already set to the same value, and
