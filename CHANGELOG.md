@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.26.0](https://github.com/KnobanLabs/sdlc/compare/v0.25.0...v0.26.0) (2026-10-27)
+
+
+### Features
+
+* add an init command that sets up or adopts a project ([#4](https://github.com/KnobanLabs/sdlc/issues/4)) ([da67592](https://github.com/KnobanLabs/sdlc/commit/da67592eabdbe18c189f25b06db33d0cb81256df))
+
 ## [0.25.0](https://github.com/KnobanLabs/sdlc/compare/v0.24.3...v0.25.0) (2026-10-27)
 
 
