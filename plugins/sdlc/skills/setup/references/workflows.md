@@ -1,6 +1,6 @@
-# Init: CI, hooks, and automation
+# Setup: CI, hooks, and automation
 
-The workflows, hooks, scripts, and configs `/sdlc:init` writes, itself or
+The workflows, hooks, scripts, and configs `/sdlc:setup` writes, itself or
 through the Release Engineer, alongside `scaffold.md`. Each file that takes comments starts
 with the copyright header (`scaffold.md`). Keep the comments: they record why
 each choice was made. Wherever a file below says `develop`, use the default
@@ -543,7 +543,7 @@ jobs:
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
 
-  # TODO(init): a job that builds and publishes or deploys the release, with
+  # TODO(setup): a job that builds and publishes or deploys the release, with
   # `needs: release-please` and
   # `if: needs.release-please.outputs.release_created == 'true'`, asking only
   # for the permissions it uses.

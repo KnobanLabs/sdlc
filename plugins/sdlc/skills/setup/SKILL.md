@@ -1,11 +1,11 @@
 ---
-name: init
+name: setup
 description: Set up a project for the SDLC org. Creates a new GitHub repository, its settings, a GitHub Project with views, and a brief, or brings an existing repository or Project in line, then staffs a team that seeds or triages the backlog. Human-invoked only.
 disable-model-invocation: true
 argument-hint: "[owner/repo] [project number or URL]"
 ---
 
-# Init
+# Setup
 
 Set up a project with the human: the repository and its files, its settings
 and protections, a GitHub Project to track the work, and a backlog that agents
@@ -49,7 +49,7 @@ interview, plan, or seeding again. A setup is `done` only when no step is
 
 Check, changing nothing: `gh --version` (2.99+), `gh auth status` (signed in,
 with the `repo`, `workflow`, `read:org`, and `project` scopes, and `admin:org`
-for an organization whose issue types or fields init may create), `git
+for an organization whose issue types or fields setup may create), `git
 --version` with `user.name` and `user.email` set, `docker info` (optional, for
 the secret scan hook), any other GitHub connection (a GitHub MCP server or
 connector), a browser the session can drive (Claude in Chrome,
@@ -184,7 +184,7 @@ instead (Project fields rather than issue fields, no merge queue, and so on).
 5. **Settings, security, labels, rulesets, and environments:**
    `references/github-setup.md`, sections 3 to 7. A branch ruleset that
    requires checks the files' pull request adds waits until it merges: mark it
-   `pending` in `setup.md`. Running `/sdlc:init` again after the merge applies
+   `pending` in `setup.md`. Running `/sdlc:setup` again after the merge applies
    it, and nothing else.
 6. **The Project,** its fields, views, and README: section 8.
 7. **The repo profile:** write its sections 1 to 4 (`repo-profile.md`),
@@ -210,7 +210,7 @@ and deletes the file.
 
 Whatever is still left becomes one Task issue, "Finish setting up `<name>`",
 with a checklist, assigned to the human, at Status **Blocked by Human**. A
-pending ruleset is on it: "Once #N merges, run `/sdlc:init` again to protect
+pending ruleset is on it: "Once #N merges, run `/sdlc:setup` again to protect
 `<branch>`".
 
 ## 7. Staff the team
@@ -221,7 +221,7 @@ elsewhere, or the repository didn't exist yet when it started (a new project, a
 clone made in this session, or a folder that became a git repository in it),
 mark the setup
 `seeding` in `setup.md` and have the human start Claude Code in the clone
-(`cd <folder> && claude`) and run `/sdlc:init` there. It resumes here.
+(`cd <folder> && claude`) and run `/sdlc:setup` there. It resumes here.
 
 From the brief, recommend which roles take part and why
 (`references/interview.md`, Team). The CPO, PM, and Architect always do. Ask
@@ -231,7 +231,7 @@ recommended ones. Then record the team in the brief.
 ## 8. Seed or triage the backlog
 
 Load `sdlc:ceo` and conduct this job: its folder exists, so skip `conducting.md`
-Start step 7, and the fit check is settled because `/sdlc:init` started it.
+Start step 7, and the fit check is settled because `/sdlc:setup` started it.
 The goal is "Seed `<name>`'s backlog from its brief", with the team chosen.
 **Adopt** adds, when open issues exist and the human agrees (recommended),
 "and bring its open issues in line": the PM triages each one, setting its type,
@@ -258,7 +258,7 @@ Tickets only: no implementation in this job. Each deliverable has its owner:
   compliance, or name clearance (legal tree).
 
 Every ticket goes into the Project with every field set (`github.md`, sections
-3 and 9), Status Todo. Each `TODO(init)` the brief couldn't fill becomes a
+3 and 9), Status Todo. Each `TODO(setup)` the brief couldn't fill becomes a
 ticket too. Because the human is right here, when the job stops on questions,
 offer to answer them now (an inbox check, as `/sdlc:inbox` runs it). When the
 job closes, mark the setup `done`, or `pending` while a step still waits.

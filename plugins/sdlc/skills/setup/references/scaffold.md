@@ -1,6 +1,6 @@
-# Init: the repository's files
+# Setup: the repository's files
 
-What `/sdlc:init` writes, itself or through the Release Engineer (`SKILL.md`,
+What `/sdlc:setup` writes, itself or through the Release Engineer (`SKILL.md`,
 section 5, step 4): the governance, docs, agent,
 GitHub, and editor files. The CI, hooks, and automation are in
 `workflows.md`. Write only what the answers in `setup.md` call for, in the
@@ -20,7 +20,7 @@ voice below: plain, specific, and explaining why where it isn't obvious.
 | `{{pitch}}` | The brief's one-paragraph description |
 | `{{areas}}` | The area labels: `ci`, `config`, `documentation`, `infra`, and the project's own |
 
-`TODO(init)` marks what the brief can't fill yet, such as the dev commands
+`TODO(setup)` marks what the brief can't fill yet, such as the dev commands
 before a stack exists. The seeding job turns each one into a ticket.
 
 ## Copyright header
@@ -74,7 +74,7 @@ existing voice.
 
 ## Getting Started
 
-TODO(init): Prerequisites, and the commands that set up, run and test the
+TODO(setup): Prerequisites, and the commands that set up, run and test the
 project.
 
 Turn on the secret scan before your first commit (it needs Docker):
@@ -122,7 +122,7 @@ defer to this file — make instruction changes here only." Then:
 
 - **Project Overview:** what it is, who uses it, where it runs, and its state
   (a new project), from the brief. Link `docs/adr/`.
-- **Dev Commands:** `TODO(init)`, and the fenced line
+- **Dev Commands:** `TODO(setup)`, and the fenced line
   `scripts/install-hooks.sh   # turn on the pre-commit secret scan (needs Docker)`.
 - **Agent Skills:** domain instructions live in `.agents/skills/`, one folder
   per skill with a `SKILL.md`; read the relevant one before working in that
@@ -183,9 +183,9 @@ domain detail in `.agents/skills/`, and this guide is the human-facing summary.
 Then these sections:
 
 - **Prerequisites:** Git 2.36 or newer; Docker, for the pre-commit secret scan;
-  the GitHub CLI, signed in. `TODO(init)`: the toolchain and the versions it
+  the GitHub CLI, signed in. `TODO(setup)`: the toolchain and the versions it
   pins.
-- **Development Setup:** `TODO(init)`. Then **Secret scan before each commit**:
+- **Development Setup:** `TODO(setup)`. Then **Secret scan before each commit**:
   the hook scans what a commit stages with the same Trivy image and config
   (`.github/trivy-secret.yaml`) as CI's _Scan for secrets_ step, so a secret is
   stopped before it's committed rather than after it's pushed; turn it on once
@@ -251,7 +251,7 @@ Then these sections:
   write, and its `RELEASE_APP_CLIENT_ID` and `RELEASE_APP_PRIVATE_KEY`
   repository secrets; until both are set, the workflow passes with a warning.
   "Allow GitHub Actions to create and approve pull requests" stays off.
-  `TODO(init)`: what a release deploys, if anything.
+  `TODO(setup)`: what a release deploys, if anything.
 - **Dependency updates:** Renovate: it runs in the `Renovate` workflow, as a
   second App kept apart from the release one (contents, pull requests, issues,
   workflows, and commit statuses write, metadata read, no webhook). Its
@@ -335,16 +335,16 @@ revoke and replace it first, then remove it from the history.
 
 ## Threat Model
 
-TODO(init): What the project runs, who can reach it, what it trusts, and what
+TODO(setup): What the project runs, who can reach it, what it trusts, and what
 it stores. Then what is in scope, and what is out of scope by design.
 
 ### In scope
 
-- TODO(init)
+- TODO(setup)
 
 ### Out of scope (by design)
 
-- TODO(init)
+- TODO(setup)
 ```
 
 Without secret scanning (`github-setup.md`, section 1), the Secrets section
@@ -519,7 +519,7 @@ it. Add the stack's own extensions.
 `extensions.json` and `settings.json`); env files (`.env*` except
 `.env.example`, which holds placeholders only); agents' local settings
 (`.claude/settings.local.json`). Then the stack's build output, dependencies,
-and caches, or `TODO(init)` without a stack.
+and caches, or `TODO(setup)` without a stack.
 
 **`.vscode/extensions.json`:** EditorConfig.EditorConfig,
 github.vscode-github-actions, redhat.vscode-yaml, timonwong.shellcheck,

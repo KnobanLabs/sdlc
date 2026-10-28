@@ -1,4 +1,4 @@
-# Init interview
+# Setup interview
 
 The defaults, then the questions in the order to ask them. **Asked** questions
 go to the human, each with its recommended option first. **Plan** items aren't
