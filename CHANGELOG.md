@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.27.0](https://github.com/KnobanLabs/sdlc/compare/v0.26.0...v0.27.0) (2026-10-28)
+
+
+### Features
+
+* rename the init command to setup ([#6](https://github.com/KnobanLabs/sdlc/issues/6)) ([048d016](https://github.com/KnobanLabs/sdlc/commit/048d016d18f088983e9c773a2660f882986bfab8))
+
 ## [0.26.0](https://github.com/KnobanLabs/sdlc/compare/v0.25.0...v0.26.0) (2026-10-27)
 
 
