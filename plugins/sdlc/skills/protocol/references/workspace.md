@@ -10,11 +10,14 @@ else is isolated by these rules.
   needs none.
 - Worktrees branch from the default branch unless `worktree.baseRef` is `"head"`.
   To build on unmerged work, the brief names the base branch; check it out or
-  rebase onto it in your worktree.
+  rebase onto it in your worktree. With squash merges, wait for that work to
+  merge and branch from the default branch instead: each squash re-conflicts
+  the branches stacked on it.
 - Untracked files the project needs (`.env`, local config) come from the repo's
   `.worktreeinclude` or as the profile describes. Never commit them.
 - The conductor assigns file ownership so parallel tasks never edit the same
-  files, and owns integration.
+  files, and owns integration. Tasks that must share one (the profile's shared
+  files) run in sequence, each branching once the one before it merges.
 
 ## 2. Slots
 

@@ -25,7 +25,9 @@ when the stack, CI, docs tooling, or repo skills change.
    exact install, build, test (full and focused), lint, format, type-check, and
    run commands; test frameworks and locations.
 3. **CI and protections:** workflows, required checks, branch protection or
-   rulesets.
+   rulesets, whether they require up-to-date branches, the merge queue, and the
+   merge method; shared files (those most changes edit, such as a schema,
+   generated code, or an index every change appends to).
 4. **Conventions:** branch names, commit and PR title style (Conventional Commits
    unless the repo uses another), issue types and fields in use, PR and issue
    templates, labels, style configs,
