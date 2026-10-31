@@ -113,7 +113,7 @@ RULES = [
     ("Tasks sharing a file run in sequence", R + "workspace.md", r"Tasks that must share one \(the profile's shared files\) run in sequence"),
     ("No stacked branches under squash merges", R + "workspace.md", r"With squash merges, wait for that work to merge and branch from the default branch instead"),
     ("Profile records shared files and merge settings", R + "repo-profile.md", r"the merge queue, and the merge method; shared files"),
-    ("Tasks sharing a shared file go in one workstream", R + "workstreams.md", r"tasks sharing a profile shared file go in one workstream"),
+    ("Tasks sharing a shared file go in one workstream", R + "workstreams.md", r"tasks sharing a profile shared file go in one workstream, or, past the span, in workstreams run one after another"),
     ("Refresh a profile section that lacks a listed field", R + "repo-profile.md", r"or when one lacks a field listed here"),
     ("CTO sequences tasks that share files", "skills/cto/SKILL.md", r"sequence those that must, and don't stack branches under squash merges"),
     ("Dependency approval requests weigh building it", R + "approvals.md", r"including building it"),
