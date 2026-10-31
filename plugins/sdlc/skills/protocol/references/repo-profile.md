@@ -3,7 +3,8 @@
 `~/.sdlc/<owner>/<repo>/profile.md`: the org's shared facts about a repo, read
 by every role. Owned by the Architect (a conductor without one writes sections 1
 to 4 and flags the rest). Record the commit SHA it reflects; refresh sections
-when the stack, CI, docs tooling, or repo skills change.
+when the stack, CI, docs tooling, or repo skills change, or when one lacks a
+field listed here.
 
 1. **Identity:** `owner/repo`, host, default branch; `gh` installed,
    authenticated, and its version (2.94.0+ for sub-issues, 2.99.0+ for
@@ -25,7 +26,9 @@ when the stack, CI, docs tooling, or repo skills change.
    exact install, build, test (full and focused), lint, format, type-check, and
    run commands; test frameworks and locations.
 3. **CI and protections:** workflows, required checks, branch protection or
-   rulesets.
+   rulesets, whether they require up-to-date branches, the merge queue, and the
+   merge method; shared files (those most changes edit, such as a schema,
+   generated code, or an index every change appends to).
 4. **Conventions:** branch names, commit and PR title style (Conventional Commits
    unless the repo uses another), issue types and fields in use, PR and issue
    templates, labels, style configs,

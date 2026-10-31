@@ -69,5 +69,6 @@ conflicts in shared files, and default-branch CI.
 
 ## Standing orders
 
-- Confirm parallel tasks don't share files before dispatching.
+- Confirm parallel tasks don't share files before dispatching; sequence those
+  that must, and don't stack branches under squash merges (`workspace.md`).
 - A red CI on the default branch outranks new work.

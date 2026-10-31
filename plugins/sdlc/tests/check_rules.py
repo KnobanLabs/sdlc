@@ -107,6 +107,15 @@ RULES = [
     ("Fail safe to external", R + "approvals.md", r"Fail safe"),
     ("Own-branch force push rule", R + "approvals.md", r"no pull request is open"),
     ("Merges follow branch protection; admin bypass needs approval", R + "approvals.md", r"admin bypass needs approval"),
+    ("Queue a PR as soon as it may merge", R + "approvals.md", r"queue the PR \(`gh pr merge <number>`\) as soon as it may merge"),
+    ("Never catch a PR's branch up to the default branch", R + "approvals.md", r"With a merge queue,.{0,120}never merge the default branch into its branch to catch up"),
+    ("Bring the default branch in only for a conflict or a queue failure, just before ready or queueing", R + "approvals.md", r"only for a conflict GitHub reports or to reproduce a queue failure, just before marking the PR ready or queueing it"),
+    ("Tasks sharing a file run in sequence", R + "workspace.md", r"Tasks that must share one \(the profile's shared files\) run in sequence"),
+    ("No stacked branches under squash merges", R + "workspace.md", r"With squash merges, wait for that work to merge and branch from the default branch instead"),
+    ("Profile records shared files and merge settings", R + "repo-profile.md", r"the merge queue, and the merge method; shared files"),
+    ("Tasks sharing a shared file go in one workstream", R + "workstreams.md", r"tasks sharing a profile shared file go in one workstream, or, past the span, in workstreams run one after another"),
+    ("Refresh a profile section that lacks a listed field", R + "repo-profile.md", r"or when one lacks a field listed here"),
+    ("CTO sequences tasks that share files", "skills/cto/SKILL.md", r"sequence those that must, and don't stack branches under squash merges"),
     ("Dependency approval requests weigh building it", R + "approvals.md", r"including building it"),
     # Lifecycle and tickets
     ("Only the human accepts", P, r"Only the human accepts"),
@@ -442,10 +451,10 @@ BUDGETS = {"always_on_descriptions": 3800}
 FILE_BUDGETS = {  # files loaded by most agents or every conductor, about 5% headroom
     P: 4300,
     R + "github.md": 2000,
-    R + "workspace.md": 1300,
+    R + "workspace.md": 1440,
     R + "templates.md": 1300,
     R + "conducting.md": 2200,
-    R + "approvals.md": 1150,
+    R + "approvals.md": 1250,
     R + "stopping.md": 400,
 }
 

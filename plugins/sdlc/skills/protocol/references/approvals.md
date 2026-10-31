@@ -62,6 +62,11 @@ this job, nobody else committed to it, and no pull request is open against it.
 - Otherwise a merge may precede acceptance once required checks pass (with no
   CI: the profile's full test, lint, type, and build commands) and
   `sdlc:expert-review` converged.
+- With a merge queue, queue the PR (`gh pr merge <number>`) as soon as it may
+  merge, and never merge the default branch into its branch to catch up: the
+  queue tests it on the latest one. Bring it in only for a conflict GitHub
+  reports or to reproduce a queue failure, just before marking the PR ready or
+  queueing it, not each time the default branch moves.
 - A technology role merges: the CTO, a CTO workstream lead within its
   workstream, a technology role conducting itself, or the single technology
   worker of a one-task job whose brief authorizes it to merge its own PR. Other
