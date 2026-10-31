@@ -454,7 +454,7 @@ FILE_BUDGETS = {  # files loaded by most agents or every conductor, about 5% hea
     R + "workspace.md": 1440,
     R + "templates.md": 1300,
     R + "conducting.md": 2200,
-    R + "approvals.md": 1270,
+    R + "approvals.md": 1250,
     R + "stopping.md": 400,
 }
 
