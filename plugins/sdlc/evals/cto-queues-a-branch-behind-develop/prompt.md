@@ -1,7 +1,8 @@
 ---
 description: A green PR behind develop goes into the merge queue as it is, without develop merged in first.
 tags: [protocol]
-max_turns: 10
+max_turns: 15
+timeout_seconds: 600
 allowed_tools: [Read, Glob, Grep, Skill]
 ---
 

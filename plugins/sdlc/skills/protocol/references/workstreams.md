@@ -2,9 +2,10 @@
 
 When a tree's part of a job has more tasks than the span, split it into
 workstreams of at most the span each, grouped by area and dependency so their
-files don't overlap, and dispatch one workstream lead per workstream (the tree's
-lead agent: `cto`, `cmo`, `clo`, or `cpo`). The top conductor dispatches
-every lead itself:
+files don't overlap (tasks sharing a profile shared file go in one
+workstream), and dispatch one workstream lead per workstream (the tree's lead
+agent: `cto`, `cmo`, `clo`, or `cpo`). The top conductor dispatches every lead
+itself:
 
 - **A tree lead on top:** plan the split and dispatch the leads.
 - **CEO on top:** staff the tree's lead as a worker to plan the split, dispatch
