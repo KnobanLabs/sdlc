@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.27.1](https://github.com/KnobanLabs/sdlc/compare/v0.27.0...v0.27.1) (2026-10-31)
+
+
+### Bug Fixes
+
+* stop agents catching a pr's branch up outside the merge queue ([#8](https://github.com/KnobanLabs/sdlc/issues/8)) ([80d3df1](https://github.com/KnobanLabs/sdlc/commit/80d3df1dcd5447c59a7d0f0b109ce2f489e9451a))
+
 ## [0.27.0](https://github.com/KnobanLabs/sdlc/compare/v0.26.0...v0.27.0) (2026-10-28)
 
 
