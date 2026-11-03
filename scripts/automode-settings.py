@@ -40,6 +40,8 @@ REPO_LIMIT = 1000
 # The gh subcommands that only read. In auto mode an allow rule skips the
 # classifier, so an allowed gh write would skip every guard in these rules.
 READS = {"view", "list", "checks", "diff", "status", "watch", "item-list", "field-list", "search"}
+# Reads that can still print a secret: `gh auth status --show-token`.
+LEAKS = {"Bash(gh auth status *)"}
 
 
 def gh(*args, host="github.com"):
@@ -143,7 +145,9 @@ def warnings(settings):
     out = []
     for rule in settings.get("permissions", {}).get("allow", []):
         m = re.fullmatch(r"Bash\(gh ([a-z-]+ )*([a-z-]+) \*\)", rule)
-        if rule.startswith("Bash(gh") and not (m and m.group(2) in READS):
+        if rule in LEAKS:
+            out.append(f"permissions.allow has {rule}: it also allows --show-token, which prints your token")
+        elif re.match(r"Bash\(gh[ )]", rule) and not (m and m.group(2) in READS):
             out.append(f"permissions.allow has {rule}: in auto mode it skips the classifier, and with it these rules")
     for key, entries in settings.get("autoMode", {}).items():
         if key in LISTS and "$defaults" not in entries:
@@ -223,7 +227,8 @@ def main():
     except json.JSONDecodeError as e:
         sys.exit(f"error: a settings file isn't valid JSON ({e}); nothing was changed")
     except subprocess.CalledProcessError as e:
-        sys.exit(f"error: `{' '.join(e.cmd)}` failed: {e.stderr.strip() or e}; is gh signed in to github.com? Nothing was changed")
+        sys.exit(f"error: `{' '.join(e.cmd)}` failed: {e.stderr.strip() or e}; check gh is signed in to that host "
+                 "and the account or repository exists. Nothing was changed")
     except FileNotFoundError as e:
         sys.exit(f"error: {e}; nothing was changed")
 

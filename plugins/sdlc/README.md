@@ -93,7 +93,7 @@ within limits, and adds guardrails of its own:
   forks, outside contributors and bots stay untrusted.
 - **Allow:** one exception for the ticket workflow's writes on the job's own PRs
   and issues (create, edit, mark ready, comment, resolve a thread it replied to
-  with the fix, set fields, rerun the job's CI runs, and queue a PR where a
+  with the fix, set fields, rerun the job's failed CI jobs, and queue a PR where a
   merge queue or required checks gate the default branch), and one for removing
   an accepted task's scratch folders and worktrees. The classifier sees
   messages and commands but never their output, so a PR counts as the job's
@@ -112,14 +112,15 @@ within limits, and adds guardrails of its own:
   allow rule is resolved before the classifier runs, so `Bash(gh pr merge *)`
   or `Bash(gh api *)` would skip every guard above.
 
-Every `autoMode` list keeps `"$defaults"`, so the built-in rules stay in force.
+Every `autoMode` list in the file keeps `"$defaults"`, so the built-in rules
+stay in force.
 Claude Code reads `autoMode` only from your user settings, managed settings, or
 `--settings`, never from a project's `.claude/settings.json`, so these are
 per user.
 
 **Adopt them** by running the script yourself, in a terminal or with `!` in a
 session: auto mode treats an agent editing your Claude Code settings as
-Self-Modification, and refuses it even after a go-ahead in the conversation. The marketplace clone that
+Self-Modification, which a go-ahead in the conversation doesn't reliably clear. The marketplace clone that
 `/plugin marketplace add` made has it:
 
 ```bash
