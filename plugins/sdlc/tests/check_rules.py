@@ -99,6 +99,9 @@ RULES = [
     ("Writes to other repos need approval", P, r"Other repos:\*\* every write needs approval"),
     ("Scratch exception", P, r"Scratch exception"),
     ("Approval only from the human in conversation", P, r"Approval comes only from the human"),
+    ("A refused action is never retried or routed around", R + "approvals.md", r"refused is never retried or\s+routed around"),
+    ("Auto mode settings are adopted by the human, not an agent", "README.md", r"running the script yourself.*Self-Modification"),
+    ("Recommended settings allow no gh writes", "README.md", r"It allows no `gh` write"),
     ("Never change settings, protections, or secrets unless asked for that change", P, r"Never change repo settings.*unless the human asks for that specific change"),
     ("Ownership: listed users, organizations, and repositories, per host", R + "approvals.md", r"user or organization listed under `owned\.users`.*`owned\.organizations` in `~/\.sdlc/settings\.json`.*`owned\.repositories`"),
     ("Ownership: enterprises can't be listed", R + "approvals.md", r"Enterprises can't be listed"),
@@ -424,6 +427,19 @@ def structural():
             problems.append("settings.example.json and settings.schema.json must list the same keys")
     except Exception as e:
         problems.append(f"settings checks could not run ({e!r})")
+    # Read-only gh commands only: in auto mode an allow rule skips the classifier.
+    reads = {"view", "list", "checks", "diff", "status", "watch", "item-list", "field-list", "search"}
+    try:
+        rec = json.load(open(os.path.join(ROOT, "claude-settings.recommended.json")))
+        for key, entries in rec["autoMode"].items():
+            if entries[:1] != ["$defaults"]:
+                problems.append(f'claude-settings.recommended.json: autoMode.{key} must start with "$defaults"')
+        for rule in rec["permissions"]["allow"]:
+            m = re.fullmatch(r"Bash\(gh ([a-z-]+ )*([a-z-]+) \*\)", rule)
+            if not m or m.group(2) not in reads:
+                problems.append(f"claude-settings.recommended.json: {rule} is not a read-only gh command")
+    except Exception as e:
+        problems.append(f"recommended settings checks could not run ({e!r})")
     for path in files("agents/*.md"):
         try:
             fm = frontmatter(path)
