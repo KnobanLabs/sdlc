@@ -145,7 +145,7 @@ def warnings(settings):
     out = []
     for rule in settings.get("permissions", {}).get("allow", []):
         m = re.fullmatch(r"Bash\(gh ([a-z-]+ )*([a-z-]+)( \*|:\*)\)", rule)
-        if rule in LEAKS:
+        if rule.replace(":*)", " *)") in LEAKS:
             out.append(f"permissions.allow has {rule}: it also allows --show-token, which prints your token")
         elif re.match(r"Bash\(gh[ :*)]", rule) and not (m and m.group(2) in READS):
             out.append(f"permissions.allow has {rule}: in auto mode it skips the classifier, and with it these rules")
