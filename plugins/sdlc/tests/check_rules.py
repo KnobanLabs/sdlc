@@ -423,7 +423,7 @@ def structural():
         if set(example) != set(schema["properties"]):
             problems.append("settings.example.json and settings.schema.json must list the same keys")
     except Exception as e:
-        problems.append(f"settings files do not parse ({e})")
+        problems.append(f"settings checks could not run ({e!r})")
     for path in files("agents/*.md"):
         try:
             fm = frontmatter(path)

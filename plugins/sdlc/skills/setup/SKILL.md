@@ -160,8 +160,9 @@ the human what's missing and why, and record what the later steps must do
 instead (Project fields rather than issue fields, no merge queue, and so on).
 
 1. **Ownership:** add the organization or the repository, with its host, to
-   `owned` in `~/.sdlc/settings.json`, as planned, creating the file if it's
-   missing and leaving it valid JSON.
+   `owned` in `~/.sdlc/settings.json`, as planned, leaving it valid JSON. If
+   it's missing, start it from the plugin's `settings.example.json` (two
+   folders above this skill's), which carries the `$schema` line.
 2. **Repository:** create it and clone it, or use the existing one
    (`references/github-setup.md`, section 2).
 3. **Issue types and fields** for an organization: section 7, before any file

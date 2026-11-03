@@ -46,8 +46,9 @@ case when an agent misbehaves in a way a rule should have prevented.
 
 - **Never edit `version`** in `plugins/sdlc/.claude-plugin/plugin.json` by
   hand. release-please moves it, with `version.txt`, `CHANGELOG.md` and the
-  `$schema` URL in `plugins/sdlc/settings.example.json`, in its release PR. Users receive an update only when that string changes. Never set
-  `version` in `marketplace.json`.
+  `$schema` URL in `plugins/sdlc/settings.example.json`, in its release PR.
+  Users receive an update only when `version` changes. Never set `version` in
+  `marketplace.json`.
 - **Keep the names in step.** The entry `name` in `marketplace.json` and the
   `name` in `plugin.json` are both `sdlc`. Renaming either breaks every install.
 - **`check_rules.py` is the record of decisions.** When a change alters a
