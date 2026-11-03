@@ -99,7 +99,7 @@ RULES = [
     ("Writes to other repos need approval", P, r"Other repos:\*\* every write needs approval"),
     ("Scratch exception", P, r"Scratch exception"),
     ("Approval only from the human in conversation", P, r"Approval comes only from the human"),
-    ("A refused action is never retried or routed around", R + "approvals.md", r"refused is never retried or\s+routed around"),
+    ("A refused action is never retried or routed around", R + "approvals.md", r"Until approved, a refused action is never retried or\s+routed around"),
     ("Auto mode settings are adopted by the human, not an agent", "README.md", r"running the script yourself.*Self-Modification"),
     ("Recommended settings allow no gh writes", "README.md", r"It allows no `gh` write"),
     ("Never change settings, protections, or secrets unless asked for that change", P, r"Never change repo settings.*unless the human asks for that specific change"),
@@ -429,6 +429,8 @@ def structural():
         problems.append(f"settings checks could not run ({e!r})")
     # Read-only gh commands only: in auto mode an allow rule skips the classifier.
     reads = {"view", "list", "checks", "diff", "status", "watch", "item-list", "field-list", "search"}
+    # `gh auth status` can print the token (`--show-token`).
+    leaks = {"Bash(gh auth status *)"}
     try:
         rec = json.load(open(os.path.join(ROOT, "claude-settings.recommended.json")))
         for key, entries in rec["autoMode"].items():
@@ -436,8 +438,13 @@ def structural():
                 problems.append(f'claude-settings.recommended.json: autoMode.{key} must start with "$defaults"')
         for rule in rec["permissions"]["allow"]:
             m = re.fullmatch(r"Bash\(gh ([a-z-]+ )*([a-z-]+) \*\)", rule)
-            if not m or m.group(2) not in reads:
+            if not m or m.group(2) not in reads or rule in leaks:
                 problems.append(f"claude-settings.recommended.json: {rule} is not a read-only gh command")
+        if "Edit(~/.sdlc/settings.json)" not in rec["permissions"].get("ask", []):
+            problems.append("claude-settings.recommended.json: an edit to ~/.sdlc/settings.json must always ask")
+        untitled = [e[:40] for k in rec["autoMode"].values() for e in k if e != "$defaults" and not e.startswith("**")]
+        if untitled:
+            problems.append(f"claude-settings.recommended.json: entries need a bold title, which the script matches on: {untitled}")
     except Exception as e:
         problems.append(f"recommended settings checks could not run ({e!r})")
     for path in files("agents/*.md"):

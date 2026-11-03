@@ -92,18 +92,23 @@ within limits, and adds guardrails of its own:
   `~/.sdlc/settings.json`; what Repository notes are; and that branches from
   forks, outside contributors and bots stay untrusted.
 - **Allow:** one exception for the ticket workflow's writes on the job's own PRs
-  and issues (create, edit, mark ready, comment, resolve threads after replying,
-  set fields, rerun the job's CI runs, and queue a PR where a merge queue or
-  required checks gate the default branch), and one for removing an accepted
-  task's scratch folders and worktrees. Release and bot PRs, `--admin`,
+  and issues (create, edit, mark ready, comment, resolve a thread it replied to
+  with the fix, set fields, rerun the job's CI runs, and queue a PR where a
+  merge queue or required checks gate the default branch), and one for removing
+  an accepted task's scratch folders and worktrees. The classifier sees
+  messages and commands but never their output, so a PR counts as the job's
+  only when the transcript shows it: created there, named by you or in a launch
+  prompt, or named by its job branch. Release and bot PRs, `--admin`,
   approving reviews, and closing issues other than through a merged PR stay
   excluded.
 - **Soft deny:** five rules the defaults don't have: a direct push to a default
   branch, a force-push to a branch that isn't the job's, merging or queueing a
   release or bot PR, repository administration, and a new dependency or tool.
   Each says what clears it.
-- **Permissions:** read-only `gh` commands, and `~/.sdlc` and `/tmp/sdlc` as
-  additional directories. It allows no `gh` write: in auto mode a matching
+- **Permissions:** read-only `gh` commands; `~/.sdlc` and `/tmp/sdlc` as
+  additional directories, so agents write job files without prompts; and an
+  `ask` rule so an edit to `~/.sdlc/settings.json`, which says what you own,
+  always asks you. It allows no `gh` write: in auto mode a matching
   allow rule is resolved before the classifier runs, so `Bash(gh pr merge *)`
   or `Bash(gh api *)` would skip every guard above.
 
@@ -113,8 +118,8 @@ Claude Code reads `autoMode` only from your user settings, managed settings, or
 per user.
 
 **Adopt them** by running the script yourself, in a terminal or with `!` in a
-session: auto mode stops an agent from editing your Claude Code settings
-(Self-Modification), even when you ask. The marketplace clone that
+session: auto mode treats an agent editing your Claude Code settings as
+Self-Modification, and refuses it even after a go-ahead in the conversation. The marketplace clone that
 `/plugin marketplace add` made has it:
 
 ```bash
@@ -123,8 +128,9 @@ python3 ~/.claude/plugins/marketplaces/KnobanLabs/scripts/automode-settings.py m
 ```
 
 It needs Python 3 and an authenticated `gh`. It changes only its own entries,
-matched by name, keeps every other key and entry, and adds `"$defaults"` to an
-`autoMode` list that lacks it. Run `merge` again after an update to bring its
+matched by their bold titles, and keeps every other key and entry. It warns
+about an allowed `gh` write rule and about an `autoMode` list without
+`"$defaults"`, but changes neither. Run `merge` again after an update to bring its
 entries up to date; it replaces them, so keep changes of your own in separate
 entries.
 

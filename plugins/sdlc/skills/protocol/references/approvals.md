@@ -80,9 +80,9 @@ this job, nobody else committed to it, and no pull request is open against it.
 A worker stops the action and escalates; the conductor records a critical inbox
 entry with the approval request template, which the human answers at the next
 inbox check. Approval is per action; bundled requests list each action. Continue
-other work while waiting. An action Claude Code refused is never retried or
-routed around: the entry quotes the refusal, and for auto mode cites the
-README's Auto mode settings.
+other work while waiting. Until approved, a refused action is never retried or
+routed around; the entry quotes the refusal (for auto mode, citing the
+README's Auto mode settings).
 
 For a new dependency or tool, give its name and version, its license and
 whether IP Counsel found it compatible, what it's for, the alternatives weighed
