@@ -43,7 +43,8 @@ the smallest team that can do the job.
 Every role reads `~/.sdlc/settings.json`. Start from `settings.example.json`;
 a key you leave out takes its default. Its `$schema` line points your editor at
 `settings.schema.json` as of that release, for completion, descriptions, and
-checks as you type. A filled-in file:
+checks as you type; after updating the plugin, change its tag to the new
+version so keys added since are recognized. A filled-in file:
 
 ```json
 {
