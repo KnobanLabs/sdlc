@@ -65,7 +65,7 @@ Unless the repo has conventions (the profile records them):
   commit), with `Fixes #N`, a summary, and how it was verified. Review rounds and
   agent reports stay local. In `gh pr` writes, name the PR by its head branch
   (`gh pr ready <branch>`, `gh pr merge <branch>`), not its number, so auto mode
-  can tie it to the job.
+  can tie it to the job; read its review threads by branch before replying.
 - **Branches:** `<type>/<issue>-<slug>` with the commit type
   (`feat/1234-retry-backoff`, `fix/88-null-session`); the issue number lets
   `sdlc:expert-review` find the ticket.
