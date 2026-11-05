@@ -84,7 +84,8 @@ roles say so.
 Skills are invoked as `/sdlc:<skill>`. Any role invoked directly runs its own job.
 `/sdlc:setup [owner/repo] [project]` sets up a new project, or adopts an
 existing repository or Project; `/sdlc:inbox` answers waiting questions;
-`/sdlc:expert-review` reviews any change.
+`/sdlc:expert-review` reviews any change; `/sdlc:clean [owner/repo]` sweeps
+what stale jobs left on your machine, after you confirm its plan.
 `/sdlc:stop` brings every agent to a safe stop (finishing its current step,
 committing and pushing work in progress, stopping its processes);
 `/sdlc:resume` continues from there, in this session or a new one; and
@@ -117,7 +118,10 @@ new session.
 - **Cleanup is automatic:** an agent stops its processes and frees its ports,
   containers, test data, and temp files before it reports, and its worktree
   goes when it hands over. The branch and ticket claim stay for rework until the
-  pull request merges, or the conductor signs off on non-code work.
+  pull request merges, or the conductor signs off on non-code work. What a
+  job leaves behind when it never finishes (a closed session, a stopped job),
+  `/sdlc:clean` finds once it's untouched for 7 days, and removes after you
+  confirm its plan. It keeps job folders and anything it doesn't recognize.
 - **Only the technology tree commits.** Other roles keep work in
   `~/.sdlc/<owner>/<repo>/` and hand repo changes over.
 - **Legal and compliance** work is informational analysis, not legal advice.
@@ -145,7 +149,7 @@ new session.
 | Path | Contents |
 |---|---|
 | `skills/protocol/` | The shared protocol every role loads, plus references (conducting, workstreams, stopping, approvals, workspace, GitHub, screenshots, repo profile, legal, design, templates) |
-| `skills/<role>/` | Nineteen role skills, plus `inbox`, `resume`, `setup`, `stop`, `transfer`, and `expert-review` |
+| `skills/<role>/` | Nineteen role skills, plus `clean`, `inbox`, `resume`, `setup`, `stop`, `transfer`, and `expert-review` |
 | `skills/setup/references/` | Setup's interview and defaults, its GitHub setup (settings, rulesets, the Project and its views, and the steps that need a browser), and the files it writes |
 | `agents/` | Worker definitions for every role except the CEO, plus the read-only `expert-reviewer` |
 | `evals/` | Behavior cases for `claude plugin eval`, each run with and without the plugin: routing to each role (tag `smoke`), protocol rules such as fit checks and team planning (`protocol`), and untrusted ticket and comment text (`security`) |

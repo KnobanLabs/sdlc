@@ -159,7 +159,8 @@ stop, do so safely per `references/stopping.md`.
   conductor then removes its worktree and takes back its slot. The branch and
   ticket claim stay until the task is done, for send-backs.
 - GitHub artifacts and committed docs are never cleaned up.
-- A conductor starting in a repo reports tasks still holding resources.
+- A conductor starting in a repo reports tasks still holding resources, and
+  suggests `/sdlc:clean` when jobs untouched for 7 days still hold some.
 - **Every role owns the tickets it's assigned,** code or not. On picking one up,
   claim it locally first (`references/workspace.md`, section 3); if another job
   holds the claim, don't take it: raise it with that job's id and continue other

@@ -13,7 +13,8 @@ dispatch one workstream lead per workstream (the tree's lead agent: `cto`,
   workstreams and sign off.
 
 Each lead's brief gives its workstream (tasks, scope, file ownership), the job id,
-its agent budget (counting itself), and its slot numbers. Budgets split the
+its agent budget (counting itself), and the slots you claimed for it
+(`workspace.md`, section 2). Budgets split the
 running-agent limit (`conducting.md`) across the leads, less what the top
 conductor runs itself, so together they never exceed it. Each budget is at least
 2 (the lead and one worker); dispatch only the leads that allows, and queue the
