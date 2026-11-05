@@ -42,7 +42,7 @@ the human's approval. Derive everything unique from the slot:
   `docker compose -p`.
 - **Temp files, sockets, browser profiles:** under `/tmp/sdlc/<job-id>/s<N>/`.
 
-A slot stays with its task until the task is accepted and cleaned up. At job
+A slot stays with its task until the task is handed over (section 6). At job
 start, the conductor reports slots held by other jobs alongside open jobs.
 
 ## 3. Shared state
@@ -50,7 +50,7 @@ start, the conductor reports slots held by other jobs alongside open jobs.
 - **Ticket claims:** `mkdir -p ~/.sdlc/<owner>/<repo>/claims && mkdir
   ~/.sdlc/<owner>/<repo>/claims/<N>`, with an `owner.md` naming the job, task,
   and time, ledgered as a `claim`. A failed `mkdir` means another job holds it.
-  Release it when the task is cleaned up or released unfinished.
+  Release it when the task is done or released unfinished.
 - Never install packages globally; avoid concurrent installs writing the same
   lockfile.
 - The git stash, branch namespace, config, and hooks are shared (`approvals.md`,
@@ -79,20 +79,26 @@ databases, temp directories, browser profiles, leases, slots, ticket claims,
 and GitHub artifacts (for traceability only). Mark entries removed if you remove your own scratch resources
 mid-task. Cleanup touches only what the ledger lists.
 
-## 6. Cleanup after acceptance
+## 6. Cleanup
 
-Only after the human accepts a task, done by the conductor present then (usually
-via `/sdlc:accept`), for that task's ledger entries:
+Automatic, never waiting on the human, and only for the task's ledger entries,
+marking each removed.
 
-1. Stop its processes (verify each PID still runs the recorded command).
-2. Remove its containers, compose projects, databases, temp directories, and
-   browser profiles; release its leases.
-3. Remove its worktrees only if nothing uncommitted remains; otherwise report.
-4. Delete its local branches only with `git branch -d`; anything needing `-D`, or
-   any remote branch, needs approval.
-5. Free its slot and release its ticket claims: remove `~/.sdlc/slots/<N>/` and
-   `~/.sdlc/<owner>/<repo>/claims/<N>/`, each after checking its `owner.md`
-   names this job and task.
+- **Before handing over** (delivered or awaiting review), the worker stops its
+  processes (checking each PID still runs the recorded command), freeing their
+  ports; removes its containers, compose projects, databases, temp directories,
+  browser profiles, and any other worktree it made (a screenshot base); and
+  releases its leases.
+- **When a worker hands over,** its conductor removes its worktree if nothing
+  uncommitted remains, otherwise reports it; a role working alone removes its
+  own. The slot goes back to whoever assigned it: a workstream lead reuses it,
+  and the conductor that claimed it frees it (`~/.sdlc/slots/<N>/`) once none
+  of its tasks will. A stopped or blocked worker keeps everything. A send-back
+  gets a fresh worktree on the branch.
+- **When the task is done,** the conductor deletes its local branch only with
+  `git branch -d` (anything needing `-D`, or any remote branch, is an approval
+  request) and releases its ticket claim (`~/.sdlc/<owner>/<repo>/claims/<N>/`).
 
-Leave resources shared with tasks still in flight, GitHub artifacts, committed
-docs, and the durable local folders. Finish with the cleanup report.
+Free a slot only after checking its `owner.md` names this job, and release a
+claim only after checking it names the task's job and task. Leave resources shared with tasks still in flight, GitHub artifacts,
+committed docs, and the durable local folders. Report what was left, and why.

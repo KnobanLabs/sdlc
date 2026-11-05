@@ -1,6 +1,6 @@
 ---
 name: protocol
-description: Shared operating protocol for the SDLC agent org. Every SDLC role loads it before acting. Covers the org, fit checks, team size, communication, approvals, workspaces, acceptance, the review gate, and where state lives.
+description: Shared operating protocol for the SDLC agent org. Every SDLC role loads it before acting. Covers the org, fit checks, team size, communication, approvals, workspaces, cleanup, the review gate, and where state lives.
 ---
 
 # SDLC Org Protocol
@@ -124,10 +124,10 @@ below the threshold. **Never put a question to the human directly,** in a reply
 or with AskUserQuestion, except: asking what to work on when invoked without a
 task; a conductor's fit check (section 3); while the human is checking the inbox
 (`/sdlc:inbox`, or asking for your questions); and within a command the human
-just ran (`/sdlc:accept`, `/sdlc:setup`). Reports
-and urgent notices (a leaked secret, a production incident) aren't questions;
-send them. Don't wait on an answer: continue whatever doesn't depend on it, and
-report what remains blocked and on which question.
+just ran (such as `/sdlc:setup`). Reports and urgent notices (a leaked secret,
+a production incident) aren't questions; send them. Don't wait on an answer:
+continue whatever doesn't depend on it, and report what remains blocked and on
+which question.
 
 ## 6. Approvals
 
@@ -145,22 +145,21 @@ publish, or GitHub write; it covers ownership, the scratch exception, and merges
   deploy keys, unless the human asks for that specific change (as in the plan
   they confirm in `/sdlc:setup`).
 
-## 7. Lifecycle and acceptance
+## 7. Lifecycle and cleanup
 
-Tasks move **in progress → in review → delivered → accepted → cleaned up →
-closed**, or are **sent back** with their workspace intact. A delivered task may
-be merged before acceptance. Work in progress or in review can be **stopped**:
-when your conductor says stop, do so safely per `references/stopping.md`.
+Tasks move **in progress → in review → delivered → done**, or are
+**sent back**. A task is **done** when its PR merges or, with no PR, when its
+conductor signs off; the conductor then sets the ticket Done and closes it.
+Work in progress or in review can be **stopped**: when your conductor says
+stop, do so safely per `references/stopping.md`.
 
-- **Only the human accepts**: an explicit statement naming the task ("accept
-  #123") or `/sdlc:accept`. "Looks good" or "thanks" is not acceptance.
-- **Until accepted, assume more work is coming:** keep the worktree, branch,
-  processes, containers, and test data.
-- **After acceptance**, the conductor cleans up what the task's ledger lists
-  (`references/workspace.md`). GitHub artifacts and committed docs are never
-  cleaned up.
-- A conductor starting in a repo reports delivered-but-not-yet-accepted tasks
-  and the resources they hold, without cleaning anything.
+- **Clean up after yourself, unasked** (`references/workspace.md`, section 6):
+  before handing a task over, stop its processes and free its ports,
+  containers, databases, temp files, browser profiles, and leases. Its
+  conductor then removes its worktree and takes back its slot. The branch and
+  ticket claim stay until the task is done, for send-backs.
+- GitHub artifacts and committed docs are never cleaned up.
+- A conductor starting in a repo reports tasks still holding resources.
 - **Every role owns the tickets it's assigned,** code or not. On picking one up,
   claim it locally first (`references/workspace.md`, section 3); if another job
   holds the claim, don't take it: raise it with that job's id and continue other

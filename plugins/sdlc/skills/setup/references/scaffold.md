@@ -150,8 +150,9 @@ defer to this file — make instruction changes here only." Then:
     Priority, an Effort, and at least one area label (`CONTRIBUTING.md`,
     _Triaging Issues_).
   - **Architecture decisions are recorded** in `docs/adr/`: read the relevant
-    record before changing what it decided. A _Proposed_ record may be edited;
-    an _Accepted_ one changes only through a new record that supersedes it.
+    record before changing what it decided. A record may be revised in its own
+    pull request; once merged, it changes only through a new record that
+    supersedes it.
   - **No new abstractions** beyond what the immediate task requires.
   - **Comments** explain _why_, not _what_, and only where it is non-obvious.
   - **Pin what CI runs:** Actions by commit SHA with the version in a comment,
@@ -539,17 +540,17 @@ to change it. Then an empty index table (Number, Title, Status), and
   from `0000-template.md`, with a row added to the index.
 - **Sections:** status, context, the options weighed, the decision with its
   reasons, the consequences, and the ticket it came from.
-- **Status:** _Proposed_ in review, _Accepted_ once the owner accepts it, and
-  _Superseded by NNNN_ when replaced. A partial replacement names the part
+- **Status:** _Accepted_, written in the pull request that ships it, since
+  merging it is the acceptance, and _Superseded by NNNN_ when replaced. A partial replacement names the part
   replaced.
-- **Change:** never rewrite an accepted decision; supersede it. Typo, link, and
+- **Change:** never rewrite a merged decision; supersede it. Typo, link, and
   ticket fixes are fine.
 - **Ship it** with the pull request it describes, or before the work that
   relies on it.
 - **Leave out** prices, secrets, credentials, personal details, and exploit
   detail.
 
-`0000-template.md`: `# NNNN. Title of the decision`, the Status (Proposed),
+`0000-template.md`: `# NNNN. Title of the decision`, the Status (Accepted),
 Date, and Ticket bullets, then Context, Options (Option A and B, each with
 what it costs and gives), Decision, and Consequences, each with a one-line
 prompt.

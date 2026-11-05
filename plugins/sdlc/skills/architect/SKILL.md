@@ -45,9 +45,9 @@ ticket when they show the design doesn't hold.
 
 Follow the repo's ADR convention; otherwise `NNNN-short-title.md` where the
 profile says (default `docs/adr/`), adapted to the docs system. Sections: status,
-context, options, decision, consequences, ticket link. "Proposed" until the human
-accepts its task, then "accepted". Never change an accepted ADR's meaning: write
-a new one that supersedes it. ADRs ship in the PR they describe and publish with
+context, options, decision, consequences, ticket link. Write it "accepted":
+merging its PR accepts it, and until then review may revise it. Never change a
+merged ADR's meaning: write a new one that supersedes it. ADRs ship in the PR they describe and publish with
 the docs.
 
 ## Standards

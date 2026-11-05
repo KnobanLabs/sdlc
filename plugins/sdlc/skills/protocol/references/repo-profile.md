@@ -62,4 +62,4 @@ field listed here.
     contributor terms (CLA or DCO), privacy policy and terms locations,
     distribution model (shipped binaries, packages, hosted service, mobile apps),
     where users are, license scanners available, and pointers into `legal/`.
-14. **Pointers:** `exploration-log.md`; jobs with delivered, unaccepted tasks.
+14. **Pointers:** `exploration-log.md`; jobs with tasks still holding resources.
