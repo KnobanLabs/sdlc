@@ -21,9 +21,9 @@ For each folder in `~/.sdlc/<owner>/<repo>/jobs/`:
 - **Live:** a file in it changed in the last 7 days. Leave it and everything it
   holds, whatever its `job.md` says.
 - **Finished:** untouched for 7 days, its status isn't `stopped` or
-  `transferred`, and either its status is `closed` or it claimed tickets or
-  opened PRs, every ticket it claimed is closed, and every PR from its branches
-  is merged or closed (check GitHub).
+  `transferred`, every ticket it claimed is closed, and every PR from its branches
+  is merged or closed (check GitHub); and either its status is `closed` or it
+  claimed tickets or opened PRs.
 - **Unclear:** untouched for 7 days but not finished, such as a stopped job,
   one with work still open, or one with no tickets or PRs to judge by.
 
@@ -73,14 +73,13 @@ same reply; run the plan as answered.
 
 Re-check each item just before removing it, since another session may be
 working: its job still untouched for 7 days, its `owner.md` still naming the
-same job, a process's PID still running the recorded command on its recorded
-port, and no live or unclear job now holding the slot a database or port is
-named for. Remove in this
-order: processes; containers, compose projects, volumes, and databases; temp
-directories and browser profiles; worktrees (`git worktree remove` without
-`--force`, then `git worktree prune`); branches (`-d`, and `-D` or remote only
-as approved); leases; claims; slots. Leave anything that fails or has changed,
-and report it.
+same job, a process's PID still running the recorded command (on its recorded
+port, if any), and no live or unclear job now holding the slot a database or
+port is named for. Remove in this order: processes; containers, compose
+projects, volumes, and databases; temp directories and browser profiles;
+worktrees (`git worktree remove` without `--force`, then `git worktree prune`);
+branches (`-d`, and `-D` or remote only as approved); leases; claims; slots.
+Leave anything that fails or has changed, and report it.
 
 After all removals, in each job whose resources you removed, mark those ledger
 rows `removed <UTC>`. Set `job.md`'s status to `closed (<time>)` only for a

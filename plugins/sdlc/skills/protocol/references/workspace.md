@@ -29,10 +29,10 @@ a number picked for a workstream or ticket, with an `owner.md` naming the repo,
 job, task, and time, ledgered as a `slot`. A failed `mkdir` means another job
 holds it; try the next number. Slots stop at 286, below Linux, macOS, and
 Windows ephemeral ports; past it, queue the task and tell the human which jobs
-hold slots. The brief passes the slot on; a
-workstream lead uses the slots its brief gives it. A slot whose `owner.md` names
-a job folder that no longer exists is stale: report it; `/sdlc:clean` frees it
-once the human confirms. Derive everything unique from the slot:
+hold slots. The brief passes the slot on; a workstream lead uses the slots its
+brief gives it. A slot whose `owner.md` names a job folder that no longer exists
+is stale: report it; `/sdlc:clean` frees it once the human confirms. Derive
+everything unique from the slot:
 
 - **Ports:** `4000 + slot × 100` through `+ 99`, unless the profile defines
   another scheme. Higher slots can overlap common service ports (5432, 6379,

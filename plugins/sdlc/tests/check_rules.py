@@ -312,7 +312,7 @@ RULES = [
     ("stop is human-only", "skills/stop/SKILL.md", r"disable-model-invocation: true"),
     ("clean is human-only", "skills/clean/SKILL.md", r"disable-model-invocation: true"),
     ("clean: a job touched in the last 7 days is live and left alone", "skills/clean/SKILL.md", r"\*\*Live:\*\* a file in it changed in the last 7 days\. Leave it"),
-    ("clean: finished means tickets closed and PRs merged or closed", "skills/clean/SKILL.md", r"isn't `stopped` or\s+`transferred`.*every ticket it claimed is closed, and every PR from its branches\s+is merged or closed"),
+    ("clean: finished means not stopped, tickets closed, and PRs merged or closed, even when closed", "skills/clean/SKILL.md", r"isn't `stopped` or\s+`transferred`, every ticket it claimed is closed, and every PR from its branches\s+is merged or closed \(check GitHub\); and either"),
     ("clean: changes nothing until the human confirms the plan", "skills/clean/SKILL.md", r"change nothing until the human confirms\s+the plan"),
     ("clean: keeps what it can't tie to a stale job or doesn't recognize", "skills/clean/SKILL.md", r"Keep what you can't tie to a stale job or don't recognize"),
     ("clean: never deletes job folders or durable state", "skills/clean/SKILL.md", r"Never delete or move\s+job folders, the durable folders"),
