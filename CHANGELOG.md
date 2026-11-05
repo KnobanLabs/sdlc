@@ -1,5 +1,22 @@
 # Changelog
 
+## [2.0.0](https://github.com/KnobanLabs/sdlc/compare/v1.0.0...v2.0.0) (2026-11-05)
+
+
+### ⚠ BREAKING CHANGES
+
+* replace /sdlc:accept with automatic cleanup ([#15](https://github.com/KnobanLabs/sdlc/issues/15))
+
+### Features
+
+* add /sdlc:clean to sweep what stale jobs leave behind ([#16](https://github.com/KnobanLabs/sdlc/issues/16)) ([58b0c63](https://github.com/KnobanLabs/sdlc/commit/58b0c63d8a928e3b62bc79e5182e7cd22c5cf693))
+* replace /sdlc:accept with automatic cleanup ([#15](https://github.com/KnobanLabs/sdlc/issues/15)) ([0591a97](https://github.com/KnobanLabs/sdlc/commit/0591a9736e3c60027b774f9704a8fc3344c1c842))
+
+
+### Reverts
+
+* add recommended auto mode settings and a script to adopt them ([#13](https://github.com/KnobanLabs/sdlc/issues/13)) ([65a5473](https://github.com/KnobanLabs/sdlc/commit/65a5473191ac4d35479456f74eb17787f0e3f2ac))
+
 ## [1.0.0](https://github.com/KnobanLabs/sdlc/compare/v0.27.1...v1.0.0) (2026-11-03)
 
 
