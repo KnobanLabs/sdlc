@@ -46,7 +46,7 @@ when asked) run as parallel workstreams sharing GitHub as the backlog.
 - **Loop:** ideation and QA file tickets (`triage`); work picks them up when
   within the human's scope; QA verifies deliveries.
 - **Baselines:** QA verifies on the ticket's branch and hunts bugs on a stable
-  baseline (default branch or last accepted state), never mid-change code. Bugs in
+  baseline (default branch or a release), never mid-change code. Bugs in
   areas under active work go to that task first.
 - File ownership spans streams, including QA's test files. Ideation avoids areas
   being reworked.

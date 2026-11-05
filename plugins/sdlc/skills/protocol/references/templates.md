@@ -61,6 +61,8 @@ Commands and results, tests, screenshot file names.
 Each with its evidence, or why not met.
 ## Created
 Issues, PRs, ledger entries.
+## Cleanup
+What you removed, and anything left with why.
 ## Open questions
 With full context, and what each blocks.
 ## Follow-ups
@@ -139,8 +141,9 @@ browser, lease, slot, claim, issue, pr, comment. Status: active, removed, record
 **Goal:** <one sentence>
 ## Delivered
 Ticket, PR, merged or awaiting merge, review outcome.
-## Awaiting your acceptance
-Each task and what it still holds.
+## Still held
+Each task's resources left in place, and why (not yet done, uncommitted, needs
+approval).
 ## Inbox
 How many questions are waiting, each by title and what it blocks. Don't ask
 them here; `/sdlc:inbox` does.
@@ -151,15 +154,4 @@ New issues.
 ## Parked
 What stopped, why, and where it stands.
 ## Next steps
-```
-
-## Cleanup report
-
-```markdown
-# Cleanup: <tasks>
-## Removed
-## Left in place
-Each with the reason (shared, uncommitted, needs `-D`, remote, failed step).
-## Needs your approval
-As approval requests.
 ```

@@ -109,7 +109,7 @@ where work is planned and tracked; keep it current.
   |---|---|---|
   | Picked up, or sent back for rework | In Progress | the worker picking it up; the conductor on send-back |
   | Handed over for review: a PR opened, or non-code work delivered | In Review | the worker handing it over |
-  | Merged, or accepted when no PR closes it | Done, and the issue closed | the conductor (or the Project's automation) |
+  | Merged, or signed off when no PR closes it | Done, and the issue closed | the conductor (or the Project's automation) |
   | Released unfinished (unclaimed, deferred, abandoned) | Todo, and the local claim released | whoever releases it |
   | Blocked | the Project's Blocked option, if any; otherwise unchanged | whoever is blocked |
 

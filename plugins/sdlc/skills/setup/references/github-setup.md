@@ -273,7 +273,7 @@ gh api graphql -f id=<status-field-id> -f query='
     {name: "In Progress", color: YELLOW, description: "Being worked on"},
     {name: "Blocked by Human", color: RED, description: "Waiting on the owner'"'"'s help, input, answer or action"},
     {name: "In Review", color: PURPLE, description: "A pull request is open"},
-    {name: "Done", color: GREEN, description: "Merged, or accepted"}]}) { projectV2Field { ... on ProjectV2SingleSelectField { id } } } }'
+    {name: "Done", color: GREEN, description: "Merged, or signed off"}]}) { projectV2Field { ... on ProjectV2SingleSelectField { id } } } }'
 ```
 
 **Priority and Effort:** an organization's issue fields go on the board with

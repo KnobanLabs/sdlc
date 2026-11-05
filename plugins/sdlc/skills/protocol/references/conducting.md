@@ -89,8 +89,9 @@ than raw output. Other roles conducting themselves do their own work.
 3. **Repo profile:** load it; if missing or stale, staff the Architect to build or
    refresh it. For a single-task job, or working alone, the one worker writes a
    minimal one instead (sections 1 to 4 of `repo-profile.md`).
-4. **Open jobs:** report delivered-but-not-yet-accepted tasks and what they hold.
-   Clean up nothing.
+4. **Open jobs:** report tasks still holding resources. In a job that isn't
+   `active`, finish cleanup for tasks done since (`workspace.md`, section 6);
+   clean up nothing else.
 5. **Plan and staff** the smallest team that owns every deliverable, sized per
    Team size above. Route each
    part to its owner: technical work to the CTO's tree, brand and marketing to the
@@ -127,10 +128,13 @@ than raw output. Other roles conducting themselves do their own work.
 - Merges are done by a technology role once checks pass and review converged:
   a workstream's lead within its workstream; otherwise the CTO (staffed for
   integration if you aren't one).
+- **Cleanup** (`workspace.md`, section 6): when a worker hands over, remove its
+  worktree and take back its slot; once a task is done, close its ticket if no
+  PR did, and finish its cleanup.
 
 ## Close
 
 Reconcile every run ticket's Project status with its phase (`github.md`,
 section 9), including transitions after workers returned (send-backs, merges,
-released work). Write the job report (`templates.md`) and leave everything not yet
-accepted in place.
+released work). Free the slots of tasks handed over, finish cleanup for every
+done task, then write the job report (`templates.md`).

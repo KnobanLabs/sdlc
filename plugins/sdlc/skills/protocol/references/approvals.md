@@ -60,7 +60,7 @@ this job, nobody else committed to it, and no pull request is open against it.
 ## 5. Merges
 
 - Follow branch protection and rulesets; any admin bypass needs approval.
-- Otherwise a merge may precede acceptance once required checks pass (with no
+- Otherwise a PR may merge once required checks pass (with no
   CI: the profile's full test, lint, type, and build commands) and
   `sdlc:expert-review` converged.
 - With a merge queue, queue the PR (`gh pr merge <number>`) as soon as it may

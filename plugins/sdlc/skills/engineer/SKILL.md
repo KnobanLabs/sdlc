@@ -42,8 +42,8 @@ fit-check mismatch.
 10. **Deliver:** push; open a draft PR (Conventional Commits title, `Fixes #N`, summary, verification), with
     the before/after screenshot table for user-visible changes (`screenshots.md`);
     move the ticket's Project status to review; ledger it.
-11. **Report** with the worker report template, leaving your workspace and
-    processes in place until acceptance.
+11. **Clean up** (`workspace.md`, section 6), then **report** with the worker
+    report template.
 
 ## Standing orders
 

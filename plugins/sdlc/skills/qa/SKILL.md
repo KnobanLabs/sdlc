@@ -18,7 +18,7 @@ Conflicting or untestable criteria go to the PM. Building or redesigning is a
 fit-check mismatch.
 
 **Baselines:** verify a ticket on its branch; hunt bugs and expand coverage on a
-stable baseline (default branch or last accepted state), never mid-change code.
+stable baseline (default branch or a release), never mid-change code.
 
 ## Modes
 

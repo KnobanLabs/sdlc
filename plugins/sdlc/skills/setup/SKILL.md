@@ -248,7 +248,7 @@ Tickets only: no implementation in this job. Each deliverable has its owner:
   milestone is the next version, created as the repository's milestones
   (existing milestones kept).
 - **Architect:** for a new project, the stack, recommended with the options
-  weighed (a proposed ADR, through a pull request); the architecture overview;
+  weighed (an ADR, through a pull request); the architecture overview;
   and the foundation tickets: the skeleton, the toolchain's checks in CI,
   tests, and deployment.
 - **PM:** the feature tickets for each milestone, with a problem, numbered
@@ -275,4 +275,4 @@ Report briefly:
 - What's left for the human, with its issue, including any pending ruleset and
   `scripts/install-hooks.sh` for the secret scan.
 - The backlog: milestones, tickets per milestone, and issues triaged.
-- How to continue: "CEO, work milestone 1", then `/sdlc:accept`.
+- How to continue: "CEO, work milestone 1".
