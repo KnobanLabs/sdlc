@@ -116,12 +116,15 @@ new session.
   When the repo has a related GitHub Project, every ticket the org files or
   triages goes into it with every field populated.
 - **Cleanup is automatic:** an agent stops its processes and frees its ports,
-  containers, test data, and temp files before it reports, and its worktree
-  goes when it hands over. The branch and ticket claim stay for rework until the
-  pull request merges, or the conductor signs off on non-code work. What a
-  job leaves behind when it never finishes (a closed session, a stopped job),
-  `/sdlc:clean` finds once it's untouched for 7 days, and removes after you
-  confirm its plan. It keeps job folders and anything it doesn't recognize.
+  containers, test data, and temp files before it reports, and its conductor
+  removes its worktree as soon as it hands over, so rework starts in a fresh
+  one. A stopped or blocked agent keeps its worktree, without the dependencies
+  and build output an install recreates. The branch and ticket claim stay for
+  rework until the pull request merges, or the conductor signs off on non-code
+  work. What a job leaves behind when it never finishes (a closed session, a
+  stopped job), `/sdlc:clean` finds once it's untouched for 7 days, and removes
+  after you confirm its plan. It keeps job folders and anything it doesn't
+  recognize.
 - **Only the technology tree commits.** Other roles keep work in
   `~/.sdlc/<owner>/<repo>/` and hand repo changes over.
 - **Legal and compliance** work is informational analysis, not legal advice.

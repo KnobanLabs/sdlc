@@ -13,7 +13,9 @@ What every agent does when its conductor messages it to stop (`/sdlc:stop`,
    away). In other repos the push needs approval: return it, and the conductor
    puts it to the human within the command they ran.
 4. **Stop** your processes, containers, and browsers, marking them stopped in the
-   ledger. Keep your worktree, branch, databases, slot, and ticket claim.
+   ledger. Keep your worktree, branch, databases, slot, and ticket claim, but
+   delete from the worktree what an install or build recreates (dependencies,
+   build output, caches).
 5. **Write a Resume from** section in your full report: what's done, the exact
    next step, and anything half-finished. Return the summary block with status
    `stopped`. The ticket's Project status doesn't change.
