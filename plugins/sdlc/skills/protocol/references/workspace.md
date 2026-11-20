@@ -88,14 +88,22 @@ marking each removed.
 - **Before handing over** (delivered or awaiting review), the worker stops its
   processes (checking each PID still runs the recorded command), freeing their
   ports; removes its containers, compose projects, databases, temp directories,
-  browser profiles, and any other worktree it made (a screenshot base); and
-  releases its leases.
+  browser profiles, and any other worktree it made (a screenshot base);
+  releases its leases; and leaves nothing uncommitted or untracked in its
+  worktree.
 - **When a worker hands over,** its conductor removes its worktree if nothing
   uncommitted remains, otherwise reports it; a role working alone removes its
-  own. The slot goes back to whoever assigned it: a workstream lead reuses it,
-  and the conductor that claimed it frees it (`~/.sdlc/slots/<N>/`) once none
-  of its tasks will. A stopped or blocked worker keeps everything. A send-back
-  gets a fresh worktree on the branch.
+  own. Remove it then, not at a later pass: Claude Code keeps a worktree that
+  has commits for at least 30 days. Run `git worktree unlock <path>` if Claude Code
+  still holds its lock, then `git worktree remove <path>` without `--force`,
+  which refuses uncommitted or untracked work. A hand-over ends the worker:
+  nothing keeps a worktree to wait on CI, a merge, or a lease, and a send-back
+  or any later step goes to a fresh worker in a fresh worktree on the branch,
+  never by message to the old one, whose worktree is gone. The slot goes back
+  to whoever assigned it: a workstream lead reuses it, and the conductor that
+  claimed it frees it (`~/.sdlc/slots/<N>/`) once none of its tasks will. A
+  stopped or blocked worker keeps everything but what an install or build
+  recreates (dependencies, build output, caches), which it deletes.
 - **When the task is done,** the conductor deletes its local branch only with
   `git branch -d` (anything needing `-D`, or any remote branch, is an approval
   request) and releases its ticket claim (`~/.sdlc/<owner>/<repo>/claims/<N>/`).

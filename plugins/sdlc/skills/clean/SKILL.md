@@ -33,7 +33,9 @@ repo.
 ## 2. Find what stale jobs left
 
 Something is the org's when a ledger, an `owner.md`, or a lease names it, or it
-follows the org's naming (`workspace.md`, section 2). Look for:
+follows the org's naming (`workspace.md`, section 2). A worktree named
+`agent-<id>` is a job's when its `job.md` or ledger names that agent ID. Look
+for:
 
 - **Ledger entries** of stale jobs not marked removed: processes, containers,
   compose projects and their volumes, databases, temp directories, browser
@@ -45,7 +47,7 @@ follows the org's naming (`workspace.md`, section 2). Look for:
   by its id, or by the id's last four hex digits when no other job in any repo
   ends in them and nothing in the match changed in 7 days.
 - **Containers and volumes** named `sdlc-<job-id>-…` for a stale job.
-- **Worktrees** under the repo's `.claude/worktrees/` that no ledger names, with
+- **Worktrees** under the repo's `.claude/worktrees/` that no job names, with
   nothing uncommitted or unpushed, a merged or closed PR, and nothing changed in
   7 days. They may be the human's own `claude --worktree` sessions, so they go
   under Ask, never Remove; removing one also deletes its ignored files.
@@ -64,10 +66,11 @@ same reply; run the plan as answered.
 - **Needs approval:** local branches `git branch -d` refuses (with their PR and
   whether it merged), and remote branches whose PR merged or closed.
 - **Ask:** each unclear job, with its status, what is still open, and what it
-  holds; and the worktrees no ledger names. They stay unless the human says
+  holds; and the worktrees no job names. They stay unless the human says
   otherwise.
 - **Kept:** live jobs' resources in brief, worktrees with uncommitted or
-  unpushed work, and what you didn't recognize, each with why.
+  unpushed work or locked by a session still running, and what you didn't
+  recognize, each with why.
 
 ## 4. Act
 
@@ -80,6 +83,11 @@ projects, volumes, and databases; temp directories and browser profiles;
 worktrees (`git worktree remove` without `--force`, then `git worktree prune`);
 branches (`-d`, and `-D` or remote only as approved); leases; claims; slots.
 Leave anything that fails or has changed, and report it.
+
+Claude Code locks an agent's worktree, naming its own process
+(`claude agent agent-<id> (pid <N> …)`), and a session that crashed leaves the
+lock behind. Run `git worktree unlock` before removing only when no `claude`
+process with that pid still runs; never unlock any other lock.
 
 After all removals, in each job whose resources you removed, mark those ledger
 rows `removed <UTC>`. Set `job.md`'s status to `closed (<time>)` only for a

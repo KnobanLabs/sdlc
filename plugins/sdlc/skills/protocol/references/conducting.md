@@ -137,4 +137,5 @@ than raw output. Other roles conducting themselves do their own work.
 Reconcile every run ticket's Project status with its phase (`github.md`,
 section 9), including transitions after workers returned (send-backs, merges,
 released work). Free the slots of tasks handed over, finish cleanup for every
-done task, then write the job report (`templates.md`).
+done task, remove their leftover worktrees, then write the job report
+(`templates.md`).
