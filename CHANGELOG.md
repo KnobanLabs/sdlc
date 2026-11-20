@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.1](https://github.com/KnobanLabs/sdlc/compare/v2.0.0...v2.0.1) (2026-11-20)
+
+
+### Bug Fixes
+
+* remove agent worktrees as soon as a worker hands over ([#17](https://github.com/KnobanLabs/sdlc/issues/17)) ([24d5d8f](https://github.com/KnobanLabs/sdlc/commit/24d5d8f193bd78c4951e291c59f978ab68b33a46))
+
 ## [2.0.0](https://github.com/KnobanLabs/sdlc/compare/v1.0.0...v2.0.0) (2026-11-05)
 
 
