@@ -95,12 +95,16 @@ escalations, and when scope changes.
   a workstream lead gets its budget and slots from its brief.
 - **Finish before starting:** keep work in progress small and finish tasks
   before starting new ones.
-- **Model and effort:** every agent runs on the main session's model and effort.
-  Never pass a model or effort override when spawning; agent files use
-  `model: inherit` and omit `effort`. The one exception: `sdlc:expert-review`
-  runs its reviewers on Opus 5.5 at High, pinned by the read-only
-  `expert-reviewer` agent. If a teammate shows a different model or effort, stop
-  and tell the human.
+- **Model, effort, and speed:** every agent, worker, and reviewer in the tree
+  runs on the model, effort, and speed (normal or fast) the human started the
+  job with. Agent files use `model: inherit` and omit `effort`, so pass no
+  override when spawning, unless the human asked for a model or effort for a
+  role or the job; then pass exactly that, and put it in the brief's Constraints
+  so it carries down the tree. A model override drops the session's effort, so
+  pass an effort with it (the one the human named; if they named none, ask).
+  Speed can't be set per agent: it follows the session, so tell the human when
+  they ask for another speed for one role. If a teammate shows a different
+  model or effort than that, stop and tell the human.
 
 ## 5. Communication
 

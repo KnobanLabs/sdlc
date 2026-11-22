@@ -25,7 +25,8 @@ For the single technology worker of a one-task job: whether it may merge its
 own PR once checks pass and review converged.
 
 ## Constraints
-Scope, prior decisions, the human's instructions.
+Scope, prior decisions, the human's instructions (including any model or effort
+they asked for, and for which roles).
 
 ## Definition of done
 Checkable conditions, including `sdlc:expert-review` convergence.
