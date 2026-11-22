@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.0](https://github.com/KnobanLabs/sdlc/compare/v2.0.1...v2.1.0) (2026-11-22)
+
+
+### Features
+
+* run the whole agent tree on the session's model, effort, and speed ([#19](https://github.com/KnobanLabs/sdlc/issues/19)) ([b6c6f79](https://github.com/KnobanLabs/sdlc/commit/b6c6f796362f69df78c0e86ffec39910ddc66663))
+
 ## [2.0.1](https://github.com/KnobanLabs/sdlc/compare/v2.0.0...v2.0.1) (2026-11-20)
 
 
