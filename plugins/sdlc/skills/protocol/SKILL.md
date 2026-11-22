@@ -98,12 +98,12 @@ escalations, and when scope changes.
 - **Model, effort, and speed:** every agent, worker, and reviewer runs on the
   model, effort, and speed (normal or fast) the human started the job with.
   Agent files use `model: inherit` and omit `effort`; pass no override unless
-  the human asked for a model or effort for a role or the job. Then pass it, as
-  an alias (`opus`, `sonnet`), with an effort (a model override drops the
-  session's), and put it in the brief's Constraints. It covers all that role
-  spawns, since agents inherit from their spawner. Speed can't be set per agent.
-  Ask the human when a request can't be met as given. If a teammate shows a
-  model or effort other than these, stop and tell the human.
+  the human asked for a model or effort for a role or the job. Then pass a model
+  as an alias (`opus`, `sonnet`), always with an effort (the one named, or ask:
+  a model override drops the session's), and put it in the brief's Constraints.
+  It covers all that role spawns, since agents inherit from their spawner. Speed
+  can't be set per agent. Ask the human when a request can't be met as given. If
+  a teammate shows a model or effort other than these, stop and tell the human.
 
 ## 5. Communication
 

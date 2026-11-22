@@ -63,7 +63,7 @@ no authority over correctness: a race or crash it never mentions is still a bug.
 ### 1. Dispatch
 
 Spawn X reviewers **in a single turn** with the `sdlc:expert-reviewer` agent,
-which runs on the session's model and effort with no edit or spawn tools (if that
+which runs on the model and effort it inherits with no edit or spawn tools (if that
 agent isn't available, use general subagents). Override the model or effort only
 when the human asked for one. Give each the prompt
 below verbatim with the ticket section filled in (or removed if no ticket).

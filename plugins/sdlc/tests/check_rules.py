@@ -87,11 +87,11 @@ RULES = [
     ("Claim held by another job: don't take it", P, r"if another job\s+holds the claim, don\'t take it"),
     ("Model, effort, and speed inherit the session, reviewers included", P, r"every agent, worker, and reviewer runs on the\s+model, effort, and speed \(normal or fast\) the human started the job with"),
     ("Override model or effort only when the human asks", P, r"pass no override unless\s+the human asked for a model or effort for a role or the job"),
-    ("Overrides are aliases and carry an effort", P, r"as\s+an alias \(`opus`, `sonnet`\), with an effort \(a model override drops the\s+session's\)"),
+    ("Overrides are aliases and carry an effort", P, r"pass a model\s+as an alias \(`opus`, `sonnet`\), always with an effort \(the one named, or ask"),
     ("A role's override covers what it spawns", P, r"It covers all that role\s+spawns, since agents inherit from their spawner"),
     ("Speed can't be set per agent", P, r"Speed can't be set per agent"),
     ("Ask the human when a model or effort request can't be met", P, r"Ask the human when a request can't be met as given"),
-    ("ER reviewers run on the session's model and effort", ER, r"runs on the session's model and effort"),
+    ("ER reviewers run on the model and effort they inherit", ER, r"runs on the model and effort it inherits"),
     # Communication
     ("Proxies relay verbatim", P, r"relay verbatim"),
     ("Decisions go up the chain", P, r"up the chain"),
