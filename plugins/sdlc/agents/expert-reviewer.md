@@ -1,8 +1,7 @@
 ---
 name: expert-reviewer
 description: Read-only reviewer for sdlc:expert-review. Hunts for real bugs in a diff and returns a findings table with a recommendation. Spawned only by expert-review.
-model: claude-opus-5-5
-effort: high
+model: inherit
 tools: Read, Grep, Glob, Bash, WebFetch, WebSearch
 ---
 

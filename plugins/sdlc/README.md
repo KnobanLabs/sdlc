@@ -136,9 +136,11 @@ new session.
   (they draft; you post).
 - **Every repo change** passes `sdlc:expert-review`; UI PRs include before and
   after screenshots unless the repo's guidance says otherwise.
-- **Model and effort** follow your session, except expert-review's reviewers,
-  which the read-only `expert-reviewer` agent pins to Opus 5.5 at High. Don't add
-  `effort` to the other agent files.
+- **Model, effort, and speed** (normal or fast mode) follow your session for
+  the whole tree, reviewers included, unless you ask for a different model or
+  effort for a role (which then covers everything that role starts) or a job.
+  Speed can't be set per agent. Agent files use `model: inherit` and no
+  `effort`.
 - **Large jobs:** a conductor coordinates at most 8 tasks per run directly
   (`span` in settings). Beyond that, the work splits into workstreams, each run
   by a workstream lead (a CTO, CMO, CLO, or CPO in lead mode) that staffs,

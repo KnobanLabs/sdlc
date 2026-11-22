@@ -85,8 +85,13 @@ RULES = [
     ("Job folders created without -p so clashes fail", R + "conducting.md", r"with `mkdir` \(no `-p`\)"),
     ("Ticket claims locked locally across sessions", R + "workspace.md", r"claims/<N>`, with an `owner\.md`"),
     ("Claim held by another job: don't take it", P, r"if another job\s+holds the claim, don\'t take it"),
-    ("Model and effort inherit the session", P, r"Never pass a model or effort override"),
-    ("expert-review reviewers pinned to Opus 5.5 High", P, r"Opus 5\.5 at High"),
+    ("Model, effort, and speed inherit the session, reviewers included", P, r"every agent, worker, and reviewer runs on the\s+model, effort, and speed \(normal or fast\) the human started the job with"),
+    ("Override model or effort only when the human asks", P, r"pass no override unless\s+the human asked for a model or effort for a role or the job"),
+    ("Overrides are aliases and carry an effort", P, r"pass a model\s+as an alias \(`opus`, `sonnet`\), always with an effort \(the one named, or ask"),
+    ("A role's override covers what it spawns", P, r"It covers all that role\s+spawns, since agents inherit from their spawner"),
+    ("Speed can't be set per agent", P, r"Speed can't be set per agent"),
+    ("Ask the human when a model or effort request can't be met", P, r"Ask the human when a request can't be met as given"),
+    ("ER reviewers run on the model and effort they inherit", ER, r"runs on the model and effort it inherits"),
     # Communication
     ("Proxies relay verbatim", P, r"relay verbatim"),
     ("Decisions go up the chain", P, r"up the chain"),
@@ -463,13 +468,11 @@ def structural():
             problems.append(f"{path}: name must match the file and be 3+ characters")
         if name == "expert-reviewer":
             tools = {t.strip() for t in str(fm.get("tools", "")).split(",") if t.strip()}
-            if fm.get("model") != "claude-opus-5-5" or fm.get("effort") != "high":
-                problems.append(f"{path}: reviewers are pinned to claude-opus-5-5 at effort high")
             if not tools or tools & {"Agent", "Task", "Edit", "Write", "NotebookEdit"}:
                 problems.append(f"{path}: reviewer must list tools, with no edit or spawn tools")
             if not {"WebFetch", "WebSearch"} <= tools:
                 problems.append(f"{path}: reviewer needs WebFetch and WebSearch to verify against sources")
-        elif fm.get("model") != "inherit" or "effort" in fm:
+        if fm.get("model") != "inherit" or "effort" in fm:
             problems.append(f"{path}: must use model: inherit and omit effort")
         for s in fm.get("skills", []):
             if s.split(":")[-1] not in skills:

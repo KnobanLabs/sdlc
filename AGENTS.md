@@ -54,8 +54,8 @@ case when an agent misbehaves in a way a rule should have prevented.
 - **`check_rules.py` is the record of decisions.** When a change alters a
   recorded decision, update its entry in `RULES` in the same pull request.
   Raise a token budget only on purpose, and say why in the pull request.
-- **Agent files** use `model: inherit` and no `effort`, except
-  `expert-reviewer`, which is pinned (the rule checks enforce both).
+- **Agent files** use `model: inherit` and no `effort`, `expert-reviewer`
+  included (the rule checks enforce it).
 - **The plugin's files carry no copyright header.** A `SKILL.md` or agent file
   must start with its frontmatter, and every line an agent loads costs tokens.
 - **No `CLAUDE.md` inside `plugins/sdlc/`.** Claude Code doesn't load one from
