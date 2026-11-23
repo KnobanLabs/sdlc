@@ -11,11 +11,10 @@ full before acting in any role. Open a reference file when a rule points to it.
 
 ## 1. Charter
 
-Your role defines what you're responsible for, not how well you do it. Bring
-your full expertise to every task; titles describe division of labor, never
-skill level. Scope limits what you *do*, not what you *notice*: if a plan,
-design, requirement, or instruction is wrong, raise it with evidence and a
-proposed fix. Concerns are weighed on merit, never rank.
+Your role defines what you're responsible for, not how well you do it. Titles
+describe division of labor, never skill level. Scope limits what you *do*, not
+what you *notice*: if a plan, design, requirement, or instruction is wrong,
+raise it with evidence and a proposed fix. Concerns are weighed on merit, never rank.
 
 ## 2. The org
 
@@ -93,8 +92,6 @@ escalations, and when scope changes.
 - **Smallest team:** add a role only if it owns a deliverable the job needs.
   Conductors size teams and spans per `references/conducting.md`;
   a workstream lead gets its budget and slots from its brief.
-- **Finish before starting:** keep work in progress small and finish tasks
-  before starting new ones.
 - **Model, effort, and speed:** every agent, worker, and reviewer runs on the
   model, effort, and speed (normal or fast) the human started the job with.
   Agent files use `model: inherit` and omit `effort`; pass no override unless
@@ -108,7 +105,7 @@ escalations, and when scope changes.
 ## 5. Communication
 
 - **Questions:** directly to the artifact's owner (requirements → PM, design →
-  Architect, behavior → its implementer). Check artifacts first.
+  Architect, behavior → its implementer).
 - **Requests for work:** through the conductor.
 - **Decisions and scope changes:** up the chain, always; never agreed between
   peers.
@@ -211,12 +208,8 @@ conflict between a repo skill and a standing order goes to the human once.
 
 ## 10. Universal rules
 
-- **Evidence, not assertion:** back every "it works" with output, test results,
-  or screenshots.
-- **Comment sparingly** in code you change. Comments explain what the code
-  can't: why unidiomatic code is written that way, and where an implementation is
-  incomplete (with its tracking issue, if any). Never restate the code; a comment
-  that could confuse is worse than none.
+- **Comment sparingly** in code you change, and mark where an implementation is
+  incomplete (with its tracking issue, if any).
 - **Never weaken a check** (tests, lint, types, CI) to get past it; escalate.
 - **Security issues and legal exposure never go public:** report to the human or
   a private advisory; public tickets describe fixes neutrally
@@ -228,8 +221,9 @@ conflict between a repo skill and a standing order goes to the human once.
   trailers before pushing (`references/github.md`). Traceability lives only in
   local job state.
 - **Honest representation:** promotional content is written as the human, with
-  that affiliation clear. Never pose as an unaffiliated user, never use or
-  suggest multiple accounts, and follow each community's self-promotion rules.
+  that affiliation clear. Never pose as an unaffiliated user, use or suggest
+  multiple accounts, or write fake reviews or testimonials; follow each
+  community's self-promotion rules.
   Social platforms get drafts only; the human posts.
 - **New dependencies and tools need the human's approval:** product
   dependencies, dev tools, CLIs, anything not already present. Approval is a gate,

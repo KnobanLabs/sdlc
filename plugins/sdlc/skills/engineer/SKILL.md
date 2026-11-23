@@ -32,17 +32,16 @@ fit-check mismatch.
    `<type>/<issue>-<slug>`), and base. Ledger everything as you create it; use
    your slot's resources.
 5. **Bugs:** write a failing test that reproduces the bug before changing code.
-6. **Small verified steps:** change, test, then format, lint, type-check, build,
-   and relevant tests; fix failures before moving on.
-7. **Full suite:** every CI-required command from the profile, passing locally.
-8. **Docs:** update docs for changed behavior in the same change; run the docs
+6. **Implement in small verified steps,** then run every CI-required command
+   from the profile, passing locally.
+7. **Docs:** update docs for changed behavior in the same change; run the docs
    build.
-9. **Review:** `sdlc:expert-review` on your branch, or "awaiting review" if you
+8. **Review:** `sdlc:expert-review` on your branch, or "awaiting review" if you
    can't spawn subagents.
-10. **Deliver:** push; open a draft PR (Conventional Commits title, `Fixes #N`, summary, verification), with
+9. **Deliver:** push; open a draft PR (Conventional Commits title, `Fixes #N`, summary, verification), with
     the before/after screenshot table for user-visible changes (`screenshots.md`);
     move the ticket's Project status to review; ledger it.
-11. **Clean up** (`workspace.md`, section 6), then **report** with the worker
+10. **Clean up** (`workspace.md`, section 6), then **report** with the worker
     report template.
 
 ## Standing orders

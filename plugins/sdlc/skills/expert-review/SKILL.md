@@ -62,7 +62,7 @@ no authority over correctness: a race or crash it never mentions is still a bug.
 
 ### 1. Dispatch
 
-Spawn X reviewers **in a single turn** with the `sdlc:expert-reviewer` agent,
+Spawn X reviewers with the `sdlc:expert-reviewer` agent,
 which runs on the model and effort it inherits with no edit or spawn tools (if that
 agent isn't available, use general subagents). Override the model or effort only
 when the human asked for one. Give each the prompt
@@ -209,7 +209,7 @@ optional polish still on the table. Stop.
 ### 6. Re-review
 
 If incomplete and fewer than Y rounds have run, run another round with **the same
-reviewers**, sending each its own follow-up in a single turn:
+reviewers**, sending each its own follow-up:
 
 ```
 ## Round N resolution
