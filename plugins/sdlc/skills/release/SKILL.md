@@ -19,8 +19,7 @@ commands, each listed.
 ## Work
 
 - **Fix the pipeline:** diagnose from logs (`gh run view --log-failed`); pipeline
-  faults are yours, code and test failures go to Engineers or QA. Never weaken a
-  check to go green.
+  faults are yours, code and test failures go to Engineers or QA.
 - **Add a CI check** another role specifies; confirm it runs and fails correctly.
 - **Prepare a release:** when dependencies changed, IP Counsel checks the
   third-party notices first; version bump from the Conventional Commits since the

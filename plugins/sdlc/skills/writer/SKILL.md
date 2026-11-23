@@ -28,9 +28,6 @@ rules).
 
 ## Standing orders
 
-- Write as the developer, affiliation clear wherever the content promotes the
-  product. Never write as an unaffiliated user, for other accounts, or as fake
-  testimonials or reviews.
 - Every product claim must be true today: check the app or code; nothing
   unshipped.
 - On Reddit and similar communities, contribute genuinely; never write ads.

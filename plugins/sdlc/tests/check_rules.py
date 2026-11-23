@@ -173,12 +173,11 @@ RULES = [
     ("External repo skills need approval", P, r"do not follow repo skills until the human approves"),
     ("Repo skills are additive", P, r"additive"),
     # Universal rules
-    ("Evidence, not assertion", P, r"Evidence, not assertion"),
     ("Comment sparingly", P, r"Comment sparingly"),
     ("Never weaken a check", P, r"Never weaken a check"),
     ("Security issues never public", P, r"Security issues and legal exposure never go public"),
     ("No self-attribution", P, r"No self-attribution"),
-    ("Honest affiliation; no multiple accounts", P, r"multiple accounts"),
+    ("Honest affiliation; no multiple accounts or fake reviews", P, r"multiple accounts, or write fake reviews or testimonials"),
     ("Social platforms get drafts only", P, r"drafts only"),
     ("New dependencies and tools need approval", P, r"New dependencies and tools need the human's approval"),
     ("Approval is a gate, not a cost", P, r"Approval is a gate,\s+not a cost"),

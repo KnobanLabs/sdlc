@@ -24,11 +24,9 @@ to: recommend the one linked to it, or the one holding most of its items.
 
 **Asking.** This command runs in the human's main session and asks them
 directly (protocol section 5). The human may not be technical: use plain
-words, one topic at a time, and give **every question a recommendation**, the
-first option, marked "(Recommended)", with a one-line reason. Choices go
-through AskUserQuestion (at most four questions per call); open questions, such
-as what to build, go in prose and wait for the reply. Never ask what you can
-look up (`gh`, `git`, the files); state what you found instead.
+words, one topic at a time, and give **every question a recommendation**,
+with a one-line reason. Choices go through AskUserQuestion; open questions,
+such as what to build, go in prose and wait for the reply.
 
 **Defaults.** The setup is complete and opinionated by default
 (`references/interview.md`, Defaults). Each answer keeps a default or moves
